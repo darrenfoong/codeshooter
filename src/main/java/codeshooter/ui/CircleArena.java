@@ -8,35 +8,36 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import codeshooter.model.Circle;
+import codeshooter.model.Entity;
 import codeshooter.model.Projectile;
+import codeshooter.model.Shape;
 import codeshooter.model.Shooter;
+import codeshooter.model.Target;
 
 public class CircleArena extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
-	private double x;
-	private double y;
-	private int radius;
-
+	private Shape shape;
 	private Color color;
 
 	private Shooter mainShooter;
+	private List<Target> targets = new ArrayList<>();
 
 	private Timer timer;
-	private final int DELAY_IN_MS = 10;
+	private int DELAY_IN_MS = 10;
 
-	public CircleArena(double x, double y, int radius, Color color) {
+	public CircleArena(double x, double y, double radius, Color color) {
 		super();
 
-		this.x = x;
-		this.y = y;
-		this.radius = radius;
+		this.shape = new Circle(x, y, radius);
 		this.color = color;
 
 		init();
@@ -50,8 +51,20 @@ public class CircleArena extends JPanel implements ActionListener {
 		timer.start();
 	}
 
+	public Shape getShape() {
+		return shape;
+	}
+
 	public void setShooter(Shooter shooter) {
 		this.mainShooter = shooter;
+	}
+
+	public List<Target> getTargets() {
+		return targets;
+	}
+
+	public void addTarget(Target target) {
+		targets.add(target);
 	}
 
 	@Override
@@ -67,18 +80,12 @@ public class CircleArena extends JPanel implements ActionListener {
 
 		g2d.setRenderingHints(rh);
 
-		Ellipse2D circle = new Ellipse2D.Double(x, y, radius*2, radius*2);
-		g2d.setColor(color);
-		g2d.fill(circle);
+		shape.draw(color, g2d);
 
 		mainShooter.draw(g2d);
-	}
 
-	public boolean containsEntirely(double ox, double oy, double oradius) {
-		if ( oradius > radius ) {
-			return false;
-		} else {
-			return (ox-radius)*(ox-radius) + (oy-radius)*(oy-radius) <= (radius-oradius)*(radius-oradius);
+		for ( Target target : targets ) {
+			target.draw(g);
 		}
 	}
 
@@ -86,18 +93,26 @@ public class CircleArena extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		mainShooter.move(this);
 
-		Iterator<Projectile> iter = mainShooter.getProjectiles().iterator();
-		while ( iter.hasNext() ) {
-			Projectile projectile = iter.next();
+		filter(mainShooter.getProjectiles());
 
-			if ( projectile.isVisible() ) {
-				projectile.move(this);
-			} else {
+		for ( Projectile projectile : mainShooter.getProjectiles() ) {
+			projectile.move(this);
+		}
+
+		filter(targets);
+
+		repaint();
+	}
+
+	private <T extends Entity> void filter(List<T> entities) {
+		Iterator<T> iter = entities.iterator();
+		while ( iter.hasNext() ) {
+			T entity = iter.next();
+
+			if ( !entity.isVisible() ) {
 				iter.remove();
 			}
 		}
-
-		repaint();
 	}
 
 	private class TAdapter extends KeyAdapter {

@@ -2,65 +2,49 @@ package codeshooter.model;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.Ellipse2D;
 
 import codeshooter.ui.CircleArena;
+import codeshooter.utils.Geometry;
 import codeshooter.utils.Heading;
 
-public class Projectile {
-	private double x;
-	private double y;
-	private int radius;
+public class Projectile extends Entity {
+	private Shape shape;
 
 	private double dx;
 	private double dy;
 
 	private Color color;
 
-	private boolean visible;
+	private double damage;
 
-	public Projectile(double x, double y, int radius, Color color, Heading heading, double speed) {
-		this.x = x;
-		this.y = y;
-		this.radius = radius;
+	public Projectile(double x, double y, int radius, Color color, double damage, Heading heading, double speed) {
+		this.shape = new Circle(x, y, radius);
 
 		this.dx = heading.getX() * speed;
 		this.dy = heading.getY() * speed;
 
 		this.color = color;
 
-		this.visible = true;
-	}
-
-	public boolean isVisible() {
-		return visible;
-	}
-
-	public void getVisible(boolean visible) {
-		this.visible = visible;
+		this.damage = damage;
 	}
 
 	public void draw(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g;
-
-		Ellipse2D circle = new Ellipse2D.Double(x, y, radius*2, radius*2);
-		g2d.setColor(color);
-		g2d.fill(circle);
+		shape.draw(color, g);
 	}
 
 	public void move(CircleArena arena) {
-		double nx = x + dx;
-		double ny = y + dy;
+		if ( Geometry.containsEntirely((Circle) arena.getShape(), (Circle) shape, dx, dy) ) {
+			shape.updateX(dx);
+			shape.updateY(dy);
 
-		double ncx = nx + radius;
-		double ncy = ny + radius;
-
-		if ( arena.containsEntirely(ncx, ncy, radius) ) {
-			x = nx;
-			y = ny;
+			for ( Target target : arena.getTargets() ) {
+				if ( Geometry.isColliding((Circle) target.getShape(), (Circle) shape) ) {
+					target.changeHealth(-damage);
+					setVisible(false);
+				}
+			}
 		} else {
-			visible = false;
+			setVisible(false);
 		}
 	}
 }

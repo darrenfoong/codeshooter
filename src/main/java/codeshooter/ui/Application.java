@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 
 import codeshooter.model.Shooter;
+import codeshooter.model.Target;
 
 public class Application extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -32,6 +33,9 @@ public class Application extends JFrame {
 									SHOOTER_COLOR,
 									SHOOTER_DIR_COLOR,
 									SHOOTER_TURN_INC_RADIANS));
+
+		arena.addTarget(new Target(100, 100, 10, Color.GREEN, 100));
+		arena.addTarget(new Target(300, 300, 10, Color.GREEN, 100));
 	}
 
 	private void initUI() {

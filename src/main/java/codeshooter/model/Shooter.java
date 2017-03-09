@@ -4,18 +4,16 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
 
 import codeshooter.ui.CircleArena;
+import codeshooter.utils.Geometry;
 import codeshooter.utils.Heading;
 
-public class Shooter {
-	private double x;
-	private double y;
-	private int radius;
+public class Shooter extends Entity {
+	private Shape shape;
 	private Heading heading;
 
 	private double dx;
@@ -29,9 +27,7 @@ public class Shooter {
 	private List<Projectile> projectiles = new ArrayList<>();
 
 	public Shooter(double x, double y, int radius, Color color, Color dirColor, double turnIncInRadians) {
-		this.x = x;
-		this.y = y;
-		this.radius = radius;
+		this.shape = new Circle(x, y, radius);
 		this.heading = new Heading();
 
 		this.color = color;
@@ -46,11 +42,15 @@ public class Shooter {
 
 	public void fire() {
 		int projectileRadius = 4;
+		int projectileDamage = 10;
 		int projectileSpeed = 10;
-		projectiles.add(new Projectile(x+radius-projectileRadius,
-										y+radius-projectileRadius,
+
+		Circle shooterShape = (Circle) shape;
+		projectiles.add(new Projectile(shooterShape.getCentreX()-projectileRadius,
+										shooterShape.getCentreY()-projectileRadius,
 										projectileRadius,
 										Color.YELLOW,
+										projectileDamage,
 										heading,
 										projectileSpeed));
 	}
@@ -58,14 +58,13 @@ public class Shooter {
 	public void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 
-		Ellipse2D circle = new Ellipse2D.Double(x, y, radius*2, radius*2);
-		g2d.setColor(color);
-		g2d.fill(circle);
+		shape.draw(color, g2d);
 
-		Line2D dirLine = new Line2D.Double(x+radius,
-											y+radius,
-											x+radius+(radius*heading.getX()),
-											y+radius+(radius*heading.getY()));
+		Circle shooterShape = (Circle) shape;
+		Line2D dirLine = new Line2D.Double(shooterShape.getCentreX(),
+											shooterShape.getCentreY(),
+											shooterShape.getCentreX()+(shooterShape.getRadius()*heading.getX()),
+											shooterShape.getCentreY()+(shooterShape.getRadius()*heading.getY()));
 		g2d.setColor(dirColor);
 		g2d.draw(dirLine);
 
@@ -75,15 +74,15 @@ public class Shooter {
 	}
 
 	public void move(CircleArena arena) {
-		double nx = x + dx;
-		double ny = y + dy;
+		if ( Geometry.containsEntirely((Circle) arena.getShape(), (Circle) shape, dx, dy) ) {
+			for ( Target target : arena.getTargets() ) {
+				if ( Geometry.isColliding((Circle) target.getShape(), (Circle) shape, dx, dy) ) {
+					return;
+				}
+			}
 
-		double ncx = nx + radius;
-		double ncy = ny + radius;
-
-		if ( arena.containsEntirely(ncx, ncy, radius) ) {
-			x = nx;
-			y = ny;
+			shape.updateX(dx);
+			shape.updateY(dy);
 		}
 	}
 

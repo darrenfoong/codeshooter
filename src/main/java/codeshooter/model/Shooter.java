@@ -41,13 +41,17 @@ public class Shooter extends Entity {
 	}
 
 	public void fire() {
+		Circle shooterShape = (Circle) shape;
+
 		int projectileRadius = 4;
 		int projectileDamage = 10;
 		int projectileSpeed = 10;
 
-		Circle shooterShape = (Circle) shape;
-		projectiles.add(new Projectile(shooterShape.getCentreX()-projectileRadius,
-										shooterShape.getCentreY()-projectileRadius,
+		double projectileX = shooterShape.getCentreX() - projectileRadius + shooterShape.getRadius() * heading.getX();
+		double projectileY = shooterShape.getCentreY() - projectileRadius + shooterShape.getRadius() * heading.getY();
+
+		projectiles.add(new Projectile(projectileX,
+										projectileY,
 										projectileRadius,
 										Color.YELLOW,
 										projectileDamage,

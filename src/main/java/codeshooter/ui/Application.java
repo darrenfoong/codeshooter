@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
+import codeshooter.arena.CircleArena;
+import codeshooter.game.Game;
 import codeshooter.model.Pillar;
 import codeshooter.model.Shooter;
 import codeshooter.model.Target;
@@ -22,23 +24,28 @@ public class Application extends JFrame {
 	private static final Color SHOOTER_DIR_COLOR = Color.RED;
 	private static final double SHOOTER_TURN_INC_RADIANS = 0.1;
 
+	private Game game;
+
 	public Application() {
 		initUI();
 
-		CircleArena arena = new CircleArena(0, 0, WIDTH/2, ARENA_COLOR);
+		game = new Game();
+
+		CircleArena arena = new CircleArena(game, 0, 0, WIDTH/2, ARENA_COLOR);
 		add(arena);
 
-		arena.setShooter(new Shooter(WIDTH/2 - SHOOTER_RADIUS,
-									WIDTH/2 - SHOOTER_RADIUS,
-									SHOOTER_RADIUS,
-									SHOOTER_COLOR,
-									SHOOTER_DIR_COLOR,
-									SHOOTER_TURN_INC_RADIANS));
+		arena.addPillar(new Pillar(300, 100, 40, Color.DARK_GRAY));
+		arena.addPillar(new Pillar(100, 300, 40, Color.DARK_GRAY));
 
-		arena.addTarget(new Target(100, 100, 10, Color.GREEN, 100));
-		arena.addTarget(new Target(300, 300, 10, Color.GREEN, 100));
-		arena.addPillar(new Pillar(300, 100, 40, Color.GREEN));
-		arena.addPillar(new Pillar(100, 300, 40, Color.GREEN));
+		game.setShooter(new Shooter(WIDTH/2 - SHOOTER_RADIUS,
+				WIDTH/2 - SHOOTER_RADIUS,
+				SHOOTER_RADIUS,
+				SHOOTER_COLOR,
+				SHOOTER_DIR_COLOR,
+				SHOOTER_TURN_INC_RADIANS));
+
+		game.addTarget(new Target(100, 100, 10, Color.GREEN, 100));
+		game.addTarget(new Target(300, 300, 10, Color.GREEN, 100));
 	}
 
 	private void initUI() {

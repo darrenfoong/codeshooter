@@ -8,7 +8,7 @@ import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import codeshooter.ui.CircleArena;
+import codeshooter.arena.Arena;
 import codeshooter.utils.Geometry;
 import codeshooter.utils.Heading;
 
@@ -73,16 +73,10 @@ public class Shooter extends Entity {
 		}
 	}
 
-	public void move(CircleArena arena) {
-		if ( Geometry.containsEntirely((Circle) arena.getShape(), (Circle) shape, dx, dy) ) {
-			for ( Target target : arena.getTargets() ) {
+	public void move(Arena arena) {
+		if ( arena.goodToMove(shape, dx, dy) ) {
+			for ( Target target : arena.getGame().getTargets() ) {
 				if ( Geometry.isColliding((Circle) target.getShape(), (Circle) shape, dx, dy) ) {
-					return;
-				}
-			}
-
-			for ( Pillar pillar : arena.getPillars() ) {
-				if ( Geometry.isColliding((Circle) pillar.getShape(), (Circle) shape, dx, dy) ) {
 					return;
 				}
 			}

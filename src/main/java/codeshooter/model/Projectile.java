@@ -3,7 +3,7 @@ package codeshooter.model;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import codeshooter.ui.CircleArena;
+import codeshooter.arena.Arena;
 import codeshooter.utils.Geometry;
 import codeshooter.utils.Heading;
 
@@ -32,12 +32,12 @@ public class Projectile extends Entity {
 		shape.draw(color, g);
 	}
 
-	public void move(CircleArena arena) {
-		if ( Geometry.containsEntirely((Circle) arena.getShape(), (Circle) shape, dx, dy) ) {
+	public void move(Arena arena) {
+		if ( arena.goodToMove(shape, dx, dy) ) {
 			shape.updateX(dx);
 			shape.updateY(dy);
 
-			for ( Target target : arena.getTargets() ) {
+			for ( Target target : arena.getGame().getTargets() ) {
 				if ( Geometry.isColliding((Circle) target.getShape(), (Circle) shape) ) {
 					target.changeHealth(-damage);
 					setVisible(false);
@@ -45,12 +45,6 @@ public class Projectile extends Entity {
 				}
 			}
 
-			for ( Pillar pillar : arena.getPillars() ) {
-				if ( Geometry.isColliding((Circle) pillar.getShape(), (Circle) shape) ) {
-					setVisible(false);
-					return;
-				}
-			}
 		} else {
 			setVisible(false);
 		}

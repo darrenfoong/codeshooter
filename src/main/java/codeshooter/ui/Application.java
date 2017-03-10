@@ -36,16 +36,31 @@ public class Application extends JFrame {
 
 		arena.addPillar(new Pillar(300, 100, 40, Color.DARK_GRAY));
 		arena.addPillar(new Pillar(100, 300, 40, Color.DARK_GRAY));
+		arena.addPillar(new Pillar(10, 160, 40, Color.DARK_GRAY));
 
 		game.setShooter(new Shooter(WIDTH/2 - SHOOTER_RADIUS,
 				WIDTH/2 - SHOOTER_RADIUS,
 				SHOOTER_RADIUS,
 				SHOOTER_COLOR,
 				SHOOTER_DIR_COLOR,
-				SHOOTER_TURN_INC_RADIANS));
+				SHOOTER_TURN_INC_RADIANS,
+				100));
 
-		game.addTarget(new Target(100, 100, 10, Color.GREEN, 100));
-		game.addTarget(new Target(300, 300, 10, Color.GREEN, 100));
+		game.addShooter(new Shooter(WIDTH/2,
+				0,
+				SHOOTER_RADIUS,
+				Color.WHITE,
+				Color.RED,
+				SHOOTER_TURN_INC_RADIANS,
+				100));
+
+		game.addShooter(new Shooter(WIDTH/2,
+				WIDTH - SHOOTER_RADIUS*2,
+				SHOOTER_RADIUS,
+				Color.WHITE,
+				Color.RED,
+				SHOOTER_TURN_INC_RADIANS,
+				100));
 	}
 
 	private void initUI() {

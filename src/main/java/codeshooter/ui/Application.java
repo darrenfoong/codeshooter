@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
+import codeshooter.model.Pillar;
 import codeshooter.model.Shooter;
 import codeshooter.model.Target;
 
@@ -36,6 +37,8 @@ public class Application extends JFrame {
 
 		arena.addTarget(new Target(100, 100, 10, Color.GREEN, 100));
 		arena.addTarget(new Target(300, 300, 10, Color.GREEN, 100));
+		arena.addPillar(new Pillar(300, 100, 40, Color.GREEN));
+		arena.addPillar(new Pillar(100, 300, 40, Color.GREEN));
 	}
 
 	private void initUI() {

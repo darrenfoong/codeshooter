@@ -41,6 +41,14 @@ public class Projectile extends Entity {
 				if ( Geometry.isColliding((Circle) target.getShape(), (Circle) shape) ) {
 					target.changeHealth(-damage);
 					setVisible(false);
+					return;
+				}
+			}
+
+			for ( Pillar pillar : arena.getPillars() ) {
+				if ( Geometry.isColliding((Circle) pillar.getShape(), (Circle) shape) ) {
+					setVisible(false);
+					return;
 				}
 			}
 		} else {

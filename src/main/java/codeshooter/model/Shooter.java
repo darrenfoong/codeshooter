@@ -81,6 +81,12 @@ public class Shooter extends Entity {
 				}
 			}
 
+			for ( Pillar pillar : arena.getPillars() ) {
+				if ( Geometry.isColliding((Circle) pillar.getShape(), (Circle) shape, dx, dy) ) {
+					return;
+				}
+			}
+
 			shape.updateX(dx);
 			shape.updateY(dy);
 		}

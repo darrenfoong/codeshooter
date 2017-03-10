@@ -17,6 +17,7 @@ import javax.swing.Timer;
 
 import codeshooter.model.Circle;
 import codeshooter.model.Entity;
+import codeshooter.model.Pillar;
 import codeshooter.model.Projectile;
 import codeshooter.model.Shape;
 import codeshooter.model.Shooter;
@@ -27,6 +28,8 @@ public class CircleArena extends JPanel implements ActionListener {
 
 	private Shape shape;
 	private Color color;
+
+	private List<Pillar> pillars = new ArrayList<>();
 
 	private Shooter mainShooter;
 	private List<Target> targets = new ArrayList<>();
@@ -53,6 +56,14 @@ public class CircleArena extends JPanel implements ActionListener {
 
 	public Shape getShape() {
 		return shape;
+	}
+
+	public List<Pillar> getPillars() {
+		return pillars;
+	}
+
+	public void addPillar(Pillar pillar) {
+		pillars.add(pillar);
 	}
 
 	public void setShooter(Shooter shooter) {
@@ -86,6 +97,10 @@ public class CircleArena extends JPanel implements ActionListener {
 
 		for ( Target target : targets ) {
 			target.draw(g);
+		}
+
+		for ( Pillar pillar : pillars ) {
+			pillar.draw(g);
 		}
 	}
 

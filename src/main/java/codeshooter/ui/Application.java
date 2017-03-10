@@ -5,11 +5,11 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
+import codeshooter.ai.RandomShooterBot;
 import codeshooter.arena.CircleArena;
 import codeshooter.game.Game;
 import codeshooter.model.Pillar;
 import codeshooter.model.Shooter;
-import codeshooter.model.Target;
 
 public class Application extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -46,21 +46,30 @@ public class Application extends JFrame {
 				SHOOTER_TURN_INC_RADIANS,
 				100));
 
-		game.addShooter(new Shooter(WIDTH/2,
-				0,
+		Shooter enemyShooterA = new Shooter(WIDTH/2,
+				10,
 				SHOOTER_RADIUS,
 				Color.WHITE,
 				Color.RED,
 				SHOOTER_TURN_INC_RADIANS,
-				100));
+				100);
 
-		game.addShooter(new Shooter(WIDTH/2,
-				WIDTH - SHOOTER_RADIUS*2,
+		Shooter enemyShooterB = new Shooter(WIDTH/2,
+				WIDTH - SHOOTER_RADIUS*2 - 10,
 				SHOOTER_RADIUS,
 				Color.WHITE,
 				Color.RED,
 				SHOOTER_TURN_INC_RADIANS,
-				100));
+				100);
+
+		game.addShooter(enemyShooterA);
+		game.addShooter(enemyShooterB);
+
+		RandomShooterBot enemyShooterBotA = new RandomShooterBot(enemyShooterA);
+		RandomShooterBot enemyShooterBotB = new RandomShooterBot(enemyShooterB);
+
+		enemyShooterBotA.start();
+		enemyShooterBotB.start();
 	}
 
 	private void initUI() {

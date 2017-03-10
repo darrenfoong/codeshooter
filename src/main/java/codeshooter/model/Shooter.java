@@ -67,6 +67,10 @@ public class Shooter extends Entity {
 										projectileSpeed));
 	}
 
+	public double getHealth() {
+		return health;
+	}
+
 	public void changeHealth(double delta) {
 		health += delta;
 
@@ -101,14 +105,18 @@ public class Shooter extends Entity {
 				}
 			}
 
+			for ( Shooter shooter : arena.getGame().getShooters() ) {
+				if ( this != shooter && Geometry.isColliding((Circle) shooter.getShape(), (Circle) shape, dx, dy) ) {
+					return;
+				}
+			}
+
 			shape.updateX(dx);
 			shape.updateY(dy);
 		}
 	}
 
-	public void keyPressed(KeyEvent e) {
-		int key = e.getKeyCode();
-
+	public void processPressKeyCode(int key) {
 		if ( key == KeyEvent.VK_LEFT ) {
 			heading.change(-turnIncInRadians);
 		}
@@ -130,6 +138,10 @@ public class Shooter extends Entity {
 		if ( key == KeyEvent.VK_SPACE ) {
 			fire();
 		}
+	}
+
+	public void keyPressed(KeyEvent e) {
+		processPressKeyCode(e.getKeyCode());
 	}
 
 	public void keyReleased(KeyEvent e) {

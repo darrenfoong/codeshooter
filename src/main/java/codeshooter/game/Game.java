@@ -78,8 +78,19 @@ public class Game {
 			projectile.move(arena);
 		}
 
-		filter(targets);
+		for ( Shooter shooter : shooters ) {
+			shooter.move(arena);
+
+			filter(shooter.getProjectiles());
+
+			for ( Projectile projectile : shooter.getProjectiles() ) {
+				projectile.move(arena);
+			}
+		}
+
 		filter(shooters);
+
+		filter(targets);
 	}
 
 	private <T extends Entity> void filter(List<T> entities) {

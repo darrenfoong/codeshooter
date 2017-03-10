@@ -24,9 +24,11 @@ public class Shooter extends Entity {
 
 	private double turnIncInRadians;
 
+	private double health;
+
 	private List<Projectile> projectiles = new ArrayList<>();
 
-	public Shooter(double x, double y, int radius, Color color, Color dirColor, double turnIncInRadians) {
+	public Shooter(double x, double y, int radius, Color color, Color dirColor, double turnIncInRadians, double health) {
 		this.shape = new Circle(x, y, radius);
 		this.heading = new Heading();
 
@@ -34,6 +36,12 @@ public class Shooter extends Entity {
 		this.dirColor = dirColor;
 
 		this.turnIncInRadians = turnIncInRadians;
+
+		this.health = health;
+	}
+
+	public Shape getShape() {
+		return shape;
 	}
 
 	public List<Projectile> getProjectiles() {
@@ -57,6 +65,14 @@ public class Shooter extends Entity {
 										projectileDamage,
 										heading,
 										projectileSpeed));
+	}
+
+	public void changeHealth(double delta) {
+		health += delta;
+
+		if ( health <= 0 ) {
+			setVisible(false);
+		}
 	}
 
 	public void draw(Graphics g) {

@@ -19,6 +19,7 @@ public class Game {
 
 	private Shooter mainShooter;
 	private List<Target> targets = new ArrayList<>();
+	private List<Shooter> shooters = new ArrayList<>();
 
 	public Game() {
 		this.keyAdapter = new TAdapter();
@@ -40,6 +41,14 @@ public class Game {
 		this.mainShooter = shooter;
 	}
 
+	public List<Shooter> getShooters() {
+		return shooters;
+	}
+
+	public void addShooter(Shooter shooter) {
+		shooters.add(shooter);
+	}
+
 	public List<Target> getTargets() {
 		return targets;
 	}
@@ -50,6 +59,10 @@ public class Game {
 
 	public void draw(Graphics g) {
 		mainShooter.draw(g);
+
+		for ( Shooter shooter : shooters ) {
+			shooter.draw(g);
+		}
 
 		for ( Target target : targets ) {
 			target.draw(g);
@@ -66,6 +79,7 @@ public class Game {
 		}
 
 		filter(targets);
+		filter(shooters);
 	}
 
 	private <T extends Entity> void filter(List<T> entities) {

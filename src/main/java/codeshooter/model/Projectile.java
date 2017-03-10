@@ -45,6 +45,14 @@ public class Projectile extends Entity {
 				}
 			}
 
+			for ( Shooter shooter : arena.getGame().getShooters() ) {
+				if ( Geometry.isColliding((Circle) shooter.getShape(), (Circle) shape) ) {
+					shooter.changeHealth(-damage);
+					setVisible(false);
+					return;
+				}
+			}
+
 		} else {
 			setVisible(false);
 		}

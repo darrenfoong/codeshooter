@@ -142,13 +142,7 @@ public class Shooter extends Entity {
 		}
 	}
 
-	public void keyPressed(KeyEvent e) {
-		processPressKeyCode(e.getKeyCode());
-	}
-
-	public void keyReleased(KeyEvent e) {
-		int key = e.getKeyCode();
-
+	public void processReleaseKeyCode(int key) {
 		if ( key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT ) {
 			dh = 0;
 		}
@@ -157,5 +151,13 @@ public class Shooter extends Entity {
 			dx = 0;
 			dy = 0;
 		}
+	}
+
+	public void keyPressed(KeyEvent e) {
+		processPressKeyCode(e.getKeyCode());
+	}
+
+	public void keyReleased(KeyEvent e) {
+		processReleaseKeyCode(e.getKeyCode());
 	}
 }

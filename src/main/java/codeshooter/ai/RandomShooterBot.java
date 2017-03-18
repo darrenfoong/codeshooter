@@ -6,7 +6,8 @@ import java.util.Random;
 import codeshooter.model.Shooter;
 
 public class RandomShooterBot extends ShooterBot {
-	private static final long KEY_INTERVAL_IN_MS = 100;
+	private static final long KEY_DURATION_IN_MS = 50;
+	private static final long KEY_WAIT_IN_MS = 50;
 
 	private static int[] outputKeys = { KeyEvent.VK_LEFT,
 									KeyEvent.VK_RIGHT,
@@ -22,10 +23,16 @@ public class RandomShooterBot extends ShooterBot {
 			public void run() {
 				while ( shooter.getHealth() > 0 ) {
 					int randomIndex = (new Random()).nextInt(outputKeys.length);
-					shooter.processPressKeyCode(outputKeys[randomIndex]);
+					int key = outputKeys[randomIndex];
 
 					try {
-						Thread.sleep(KEY_INTERVAL_IN_MS);
+						shooter.processPressKeyCode(key);
+
+						Thread.sleep(KEY_DURATION_IN_MS);
+
+						shooter.processReleaseKeyCode(key);
+
+						Thread.sleep(KEY_WAIT_IN_MS);
 					} catch ( InterruptedException e ) {
 						e.printStackTrace();
 					}

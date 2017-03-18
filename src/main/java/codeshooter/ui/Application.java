@@ -22,7 +22,7 @@ public class Application extends JFrame {
 	private static final int SHOOTER_RADIUS = 20;
 	private static final Color SHOOTER_COLOR = Color.BLUE;
 	private static final Color SHOOTER_DIR_COLOR = Color.RED;
-	private static final double SHOOTER_TURN_INC_RADIANS = 0.1;
+	private static final double SHOOTER_TURN_INC_RADIANS = 0.05;
 
 	private Game game;
 

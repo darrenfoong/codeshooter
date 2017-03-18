@@ -39,6 +39,7 @@ public class Game {
 
 	public void setShooter(Shooter shooter) {
 		this.mainShooter = shooter;
+		shooters.add(shooter);
 	}
 
 	public List<Shooter> getShooters() {
@@ -58,8 +59,6 @@ public class Game {
 	}
 
 	public void draw(Graphics g) {
-		mainShooter.draw(g);
-
 		for ( Shooter shooter : shooters ) {
 			shooter.draw(g);
 		}
@@ -70,14 +69,6 @@ public class Game {
 	}
 
 	public void refresh() {
-		mainShooter.move(arena);
-
-		filter(mainShooter.getProjectiles());
-
-		for ( Projectile projectile : mainShooter.getProjectiles() ) {
-			projectile.move(arena);
-		}
-
 		for ( Shooter shooter : shooters ) {
 			shooter.move(arena);
 

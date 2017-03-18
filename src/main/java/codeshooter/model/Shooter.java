@@ -18,6 +18,7 @@ public class Shooter extends Entity {
 
 	private double dx;
 	private double dy;
+	private double dh;
 
 	private Color color;
 	private Color dirColor;
@@ -113,16 +114,17 @@ public class Shooter extends Entity {
 
 			shape.updateX(dx);
 			shape.updateY(dy);
+			heading.change(dh);
 		}
 	}
 
 	public void processPressKeyCode(int key) {
 		if ( key == KeyEvent.VK_LEFT ) {
-			heading.change(-turnIncInRadians);
+			dh = -turnIncInRadians;
 		}
 
 		if ( key == KeyEvent.VK_RIGHT ) {
-			heading.change(turnIncInRadians);
+			dh = turnIncInRadians;
 		}
 
 		if ( key == KeyEvent.VK_UP ) {
@@ -146,6 +148,10 @@ public class Shooter extends Entity {
 
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
+
+		if ( key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT ) {
+			dh = 0;
+		}
 
 		if ( key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN ) {
 			dx = 0;

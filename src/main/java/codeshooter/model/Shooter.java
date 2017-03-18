@@ -16,9 +16,8 @@ public class Shooter extends Entity {
 	private Shape shape;
 	private Heading heading;
 
-	private double dx;
-	private double dy;
-	private double dh;
+	private int displacementDirection;
+	private int rotationDirection;
 
 	private Color color;
 	private Color dirColor;
@@ -99,6 +98,10 @@ public class Shooter extends Entity {
 	}
 
 	public void move(Arena arena) {
+		heading.change(rotationDirection * turnIncInRadians);
+		double dx = displacementDirection * heading.getX();
+		double dy = displacementDirection * heading.getY();
+
 		if ( arena.goodToMove(shape, dx, dy) ) {
 			for ( Target target : arena.getGame().getTargets() ) {
 				if ( Geometry.isColliding((Circle) target.getShape(), (Circle) shape, dx, dy) ) {
@@ -114,27 +117,24 @@ public class Shooter extends Entity {
 
 			shape.updateX(dx);
 			shape.updateY(dy);
-			heading.change(dh);
 		}
 	}
 
 	public void processPressKeyCode(int key) {
 		if ( key == KeyEvent.VK_LEFT ) {
-			dh = -turnIncInRadians;
+			rotationDirection = -1;
 		}
 
 		if ( key == KeyEvent.VK_RIGHT ) {
-			dh = turnIncInRadians;
+			rotationDirection = 1;
 		}
 
 		if ( key == KeyEvent.VK_UP ) {
-			dx = heading.getX();
-			dy = heading.getY();
+			displacementDirection = 1;
 		}
 
 		if ( key == KeyEvent.VK_DOWN ) {
-			dx = -heading.getX();
-			dy = -heading.getY();
+			displacementDirection = -1;
 		}
 
 		if ( key == KeyEvent.VK_SPACE ) {
@@ -144,12 +144,11 @@ public class Shooter extends Entity {
 
 	public void processReleaseKeyCode(int key) {
 		if ( key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT ) {
-			dh = 0;
+			rotationDirection = 0;
 		}
 
 		if ( key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN ) {
-			dx = 0;
-			dy = 0;
+			displacementDirection = 0;
 		}
 	}
 

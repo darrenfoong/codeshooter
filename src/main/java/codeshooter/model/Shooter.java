@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import codeshooter.arena.Arena;
+import codeshooter.arena.CircleArena;
 import codeshooter.utils.Geometry;
 import codeshooter.utils.Heading;
 
@@ -137,6 +138,45 @@ public class Shooter extends Entity {
 
 			shape.updateX(dx);
 			shape.updateY(dy);
+		}
+
+		updateSensor(arena);
+	}
+
+	public void updateSensor(Arena arena) {
+		if ( color.equals(Color.BLUE) ) {
+			Circle shooterShape = (Circle) shape;
+			CircleArena circleArena = (CircleArena) arena;
+
+			System.out.println("Start sensor readings (heading: " + heading.get() + ")");
+
+			for ( int i = 0; i <= sensorAngleInDegrees; i += 5 ) {
+				Heading currentHeading = new Heading(heading.get());
+				currentHeading.change(Math.toRadians(-sensorAngleInDegrees/2+i));
+
+				double arenaRange = Geometry.getRangeInsideCircle(shooterShape.getCentreX(), shooterShape.getCentreY(), currentHeading, (Circle) circleArena.getShape());
+				double objectRange = Double.POSITIVE_INFINITY;
+
+				for ( Pillar pillar : circleArena.getPillars() ) {
+					double pillarRange = Geometry.getRangeOutsideCircle(shooterShape.getCentreX(), shooterShape.getCentreY(), currentHeading, (Circle) pillar.getShape());
+					if ( 0 <= pillarRange && pillarRange < objectRange ) {
+						objectRange = pillarRange;
+					}
+				}
+
+				for ( Shooter shooter : arena.getGame().getShooters() ) {
+					if ( this != shooter ) {
+						double shooterRange = Geometry.getRangeOutsideCircle(shooterShape.getCentreX(), shooterShape.getCentreY(), currentHeading, (Circle) shooter.getShape());
+						if ( 0 <= shooterRange && shooterRange < objectRange ) {
+							objectRange = shooterRange;
+						}
+					}
+				}
+
+				double range = Math.min(arenaRange, objectRange) - shooterShape.getRadius();
+				range = Math.min(range, sensorRange);
+				System.out.println(" Heading " + currentHeading.get() + ": " + range);
+			}
 		}
 	}
 

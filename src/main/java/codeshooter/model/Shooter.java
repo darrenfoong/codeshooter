@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Arc2D;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +22,18 @@ public class Shooter extends Entity {
 
 	private Color color;
 	private Color dirColor;
+	private static final Color sensorColor = Color.ORANGE;
 
 	private double turnIncInRadians;
 
 	private double health;
 
+	private double sensorAngleInDegrees;
+	private double sensorRange;
+
 	private List<Projectile> projectiles = new ArrayList<>();
 
-	public Shooter(double x, double y, int radius, Color color, Color dirColor, double turnIncInRadians, double health) {
+	public Shooter(double x, double y, int radius, Color color, Color dirColor, double turnIncInRadians, double health, double sensorAngleInDegrees, double sensorRange) {
 		this.shape = new Circle(x, y, radius);
 		this.heading = new Heading();
 
@@ -38,6 +43,9 @@ public class Shooter extends Entity {
 		this.turnIncInRadians = turnIncInRadians;
 
 		this.health = health;
+
+		this.sensorAngleInDegrees = sensorAngleInDegrees;
+		this.sensorRange = sensorRange;
 	}
 
 	public Shape getShape() {
@@ -82,9 +90,21 @@ public class Shooter extends Entity {
 	public void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 
+		Circle shooterShape = (Circle) shape;
+
+		Arc2D sensorArc = new Arc2D.Double(shooterShape.getCentreX() - sensorRange,
+											shooterShape.getCentreY() - sensorRange,
+											2 * sensorRange,
+											2 * sensorRange,
+											heading.getSwingDegrees() - sensorAngleInDegrees/2,
+											sensorAngleInDegrees,
+											Arc2D.PIE);
+
+		g2d.setColor(sensorColor);
+		g2d.draw(sensorArc);
+
 		shape.draw(color, g2d);
 
-		Circle shooterShape = (Circle) shape;
 		Line2D dirLine = new Line2D.Double(shooterShape.getCentreX(),
 											shooterShape.getCentreY(),
 											shooterShape.getCentreX()+(shooterShape.getRadius()*heading.getX()),

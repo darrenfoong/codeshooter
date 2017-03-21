@@ -23,6 +23,8 @@ public class Application extends JFrame {
 	private static final Color SHOOTER_COLOR = Color.BLUE;
 	private static final Color SHOOTER_DIR_COLOR = Color.RED;
 	private static final double SHOOTER_TURN_INC_RADIANS = 0.05;
+	private static final double SHOOTER_SENSOR_ANGLE_IN_DEGREES = 30;
+	private static final double SHOOTER_SENSOR_RANGE = 200;
 
 	private Game game;
 
@@ -44,7 +46,9 @@ public class Application extends JFrame {
 				SHOOTER_COLOR,
 				SHOOTER_DIR_COLOR,
 				SHOOTER_TURN_INC_RADIANS,
-				100));
+				100,
+				SHOOTER_SENSOR_ANGLE_IN_DEGREES,
+				SHOOTER_SENSOR_RANGE));
 
 		Shooter enemyShooterA = new Shooter(WIDTH/2,
 				10,
@@ -52,7 +56,9 @@ public class Application extends JFrame {
 				Color.WHITE,
 				Color.RED,
 				SHOOTER_TURN_INC_RADIANS,
-				100);
+				100,
+				SHOOTER_SENSOR_ANGLE_IN_DEGREES,
+				SHOOTER_SENSOR_RANGE);
 
 		Shooter enemyShooterB = new Shooter(WIDTH/2,
 				WIDTH - SHOOTER_RADIUS*2 - 10,
@@ -60,7 +66,9 @@ public class Application extends JFrame {
 				Color.WHITE,
 				Color.RED,
 				SHOOTER_TURN_INC_RADIANS,
-				100);
+				100,
+				SHOOTER_SENSOR_ANGLE_IN_DEGREES,
+				SHOOTER_SENSOR_RANGE);
 
 		game.addShooter(enemyShooterA);
 		game.addShooter(enemyShooterB);

@@ -12,6 +12,10 @@ public class Heading {
 		return heading;
 	}
 
+	public double getSwingDegrees() {
+		return (450 - Math.toDegrees(heading)) % 360;
+	}
+
 	public void change(double delta) {
 		heading += delta;
 

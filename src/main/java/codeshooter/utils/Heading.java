@@ -8,6 +8,10 @@ public class Heading {
 		this.heading = 0;
 	}
 
+	public Heading(double heading) {
+		this.heading = heading;
+	}
+
 	public double get() {
 		return heading;
 	}

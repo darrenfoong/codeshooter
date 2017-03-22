@@ -5,7 +5,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-import codeshooter.ai.RandomShooterBot;
+import codeshooter.ai.HunterShooterBot;
 import codeshooter.arena.CircleArena;
 import codeshooter.game.Game;
 import codeshooter.model.Pillar;
@@ -77,8 +77,8 @@ public class Application extends JFrame {
 		game.addShooter(enemyShooterA);
 		game.addShooter(enemyShooterB);
 
-		RandomShooterBot enemyShooterBotA = new RandomShooterBot(enemyShooterA);
-		RandomShooterBot enemyShooterBotB = new RandomShooterBot(enemyShooterB);
+		HunterShooterBot enemyShooterBotA = new HunterShooterBot(enemyShooterA);
+		HunterShooterBot enemyShooterBotB = new HunterShooterBot(enemyShooterB);
 
 		enemyShooterBotA.start();
 		enemyShooterBotB.start();

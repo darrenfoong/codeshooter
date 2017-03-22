@@ -25,6 +25,7 @@ public class Application extends JFrame {
 	private static final double SHOOTER_TURN_INC_RADIANS = 0.05;
 	private static final double SHOOTER_SENSOR_ANGLE_IN_DEGREES = 30;
 	private static final double SHOOTER_SENSOR_RANGE = 200;
+	private static final int SHOOTER_SENSOR_NUM_READINGS = 7;
 
 	private Game game;
 
@@ -48,7 +49,8 @@ public class Application extends JFrame {
 				SHOOTER_TURN_INC_RADIANS,
 				100,
 				SHOOTER_SENSOR_ANGLE_IN_DEGREES,
-				SHOOTER_SENSOR_RANGE));
+				SHOOTER_SENSOR_RANGE,
+				SHOOTER_SENSOR_NUM_READINGS));
 
 		Shooter enemyShooterA = new Shooter(WIDTH/2,
 				10,
@@ -58,7 +60,8 @@ public class Application extends JFrame {
 				SHOOTER_TURN_INC_RADIANS,
 				100,
 				SHOOTER_SENSOR_ANGLE_IN_DEGREES,
-				SHOOTER_SENSOR_RANGE);
+				SHOOTER_SENSOR_RANGE,
+				SHOOTER_SENSOR_NUM_READINGS);
 
 		Shooter enemyShooterB = new Shooter(WIDTH/2,
 				WIDTH - SHOOTER_RADIUS*2 - 10,
@@ -68,7 +71,8 @@ public class Application extends JFrame {
 				SHOOTER_TURN_INC_RADIANS,
 				100,
 				SHOOTER_SENSOR_ANGLE_IN_DEGREES,
-				SHOOTER_SENSOR_RANGE);
+				SHOOTER_SENSOR_RANGE,
+				SHOOTER_SENSOR_NUM_READINGS);
 
 		game.addShooter(enemyShooterA);
 		game.addShooter(enemyShooterB);

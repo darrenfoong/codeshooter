@@ -11,6 +11,7 @@ import java.util.List;
 
 import codeshooter.arena.Arena;
 import codeshooter.arena.CircleArena;
+import codeshooter.model.Sensor.ReadingType;
 import codeshooter.utils.Geometry;
 import codeshooter.utils.Heading;
 
@@ -29,12 +30,11 @@ public class Shooter extends Entity {
 
 	private double health;
 
-	private double sensorAngleInDegrees;
-	private double sensorRange;
+	private Sensor sensor;
 
 	private List<Projectile> projectiles = new ArrayList<>();
 
-	public Shooter(double x, double y, int radius, Color color, Color dirColor, double turnIncInRadians, double health, double sensorAngleInDegrees, double sensorRange) {
+	public Shooter(double x, double y, int radius, Color color, Color dirColor, double turnIncInRadians, double health, double sensorAngleInDegrees, double sensorRange, int sensorNumReadings) {
 		this.shape = new Circle(x, y, radius);
 		this.heading = new Heading();
 
@@ -45,8 +45,7 @@ public class Shooter extends Entity {
 
 		this.health = health;
 
-		this.sensorAngleInDegrees = sensorAngleInDegrees;
-		this.sensorRange = sensorRange;
+		this.sensor = new Sensor(sensorAngleInDegrees, sensorRange, sensorNumReadings);
 	}
 
 	public Shape getShape() {
@@ -88,17 +87,21 @@ public class Shooter extends Entity {
 		}
 	}
 
+	public Sensor getSensor() {
+		return sensor;
+	}
+
 	public void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 
 		Circle shooterShape = (Circle) shape;
 
-		Arc2D sensorArc = new Arc2D.Double(shooterShape.getCentreX() - sensorRange,
-											shooterShape.getCentreY() - sensorRange,
-											2 * sensorRange,
-											2 * sensorRange,
-											heading.getSwingDegrees() - sensorAngleInDegrees/2,
-											sensorAngleInDegrees,
+		Arc2D sensorArc = new Arc2D.Double(shooterShape.getCentreX() - sensor.getRange(),
+											shooterShape.getCentreY() - sensor.getRange(),
+											2 * sensor.getRange(),
+											2 * sensor.getRange(),
+											heading.getSwingDegrees() - sensor.getAngle()/2,
+											sensor.getAngle(),
 											Arc2D.PIE);
 
 		g2d.setColor(sensorColor);
@@ -148,19 +151,20 @@ public class Shooter extends Entity {
 			Circle shooterShape = (Circle) shape;
 			CircleArena circleArena = (CircleArena) arena;
 
-			System.out.println("Start sensor readings (heading: " + heading.get() + ")");
-
-			for ( int i = 0; i <= sensorAngleInDegrees; i += 5 ) {
+			for ( int i = 0; i < sensor.getNumReadings(); i++ ) {
 				Heading currentHeading = new Heading(heading.get());
-				currentHeading.change(Math.toRadians(-sensorAngleInDegrees/2+i));
+				currentHeading.change(Math.toRadians(-sensor.getAngle()/2 + i*sensor.getReadingInterval()));
 
 				double arenaRange = Geometry.getRangeInsideCircle(shooterShape.getCentreX(), shooterShape.getCentreY(), currentHeading, (Circle) circleArena.getShape());
 				double objectRange = Double.POSITIVE_INFINITY;
+
+				ReadingType objectType = ReadingType.EMPTY;
 
 				for ( Pillar pillar : circleArena.getPillars() ) {
 					double pillarRange = Geometry.getRangeOutsideCircle(shooterShape.getCentreX(), shooterShape.getCentreY(), currentHeading, (Circle) pillar.getShape());
 					if ( 0 <= pillarRange && pillarRange < objectRange ) {
 						objectRange = pillarRange;
+						objectType = ReadingType.WALL;
 					}
 				}
 
@@ -169,13 +173,29 @@ public class Shooter extends Entity {
 						double shooterRange = Geometry.getRangeOutsideCircle(shooterShape.getCentreX(), shooterShape.getCentreY(), currentHeading, (Circle) shooter.getShape());
 						if ( 0 <= shooterRange && shooterRange < objectRange ) {
 							objectRange = shooterRange;
+							objectType = ReadingType.SHOOTER;
 						}
 					}
 				}
 
-				double range = Math.min(arenaRange, objectRange) - shooterShape.getRadius();
-				range = Math.min(range, sensorRange);
-				System.out.println(" Heading " + currentHeading.get() + ": " + range);
+				double reading;
+				ReadingType type;
+
+				if ( arenaRange < objectRange ) {
+					reading = arenaRange;
+					type = ReadingType.WALL;
+				} else {
+					reading = objectRange;
+					type = objectType;
+				}
+
+				if ( reading > sensor.getRange() ) {
+					reading = sensor.getRange();
+					type = ReadingType.EMPTY;
+				}
+
+				sensor.updateReading(i, reading, type);
+				System.out.println(" Heading " + i + ": " + reading + " " + type);
 			}
 		}
 	}

@@ -147,56 +147,53 @@ public class Shooter extends Entity {
 	}
 
 	public void updateSensor(Arena arena) {
-		if ( color.equals(Color.BLUE) ) {
-			Circle shooterShape = (Circle) shape;
-			CircleArena circleArena = (CircleArena) arena;
+		Circle shooterShape = (Circle) shape;
+		CircleArena circleArena = (CircleArena) arena;
 
-			for ( int i = 0; i < sensor.getNumReadings(); i++ ) {
-				Heading currentHeading = new Heading(heading.get());
-				currentHeading.change(Math.toRadians(-sensor.getAngle()/2 + i*sensor.getReadingInterval()));
+		for ( int i = 0; i < sensor.getNumReadings(); i++ ) {
+			Heading currentHeading = new Heading(heading.get());
+			currentHeading.change(Math.toRadians(-sensor.getAngle()/2 + i*sensor.getReadingInterval()));
 
-				double arenaRange = Geometry.getRangeInsideCircle(shooterShape.getCentreX(), shooterShape.getCentreY(), currentHeading, (Circle) circleArena.getShape());
-				double objectRange = Double.POSITIVE_INFINITY;
+			double arenaRange = Geometry.getRangeInsideCircle(shooterShape.getCentreX(), shooterShape.getCentreY(), currentHeading, (Circle) circleArena.getShape());
+			double objectRange = Double.POSITIVE_INFINITY;
 
-				ReadingType objectType = ReadingType.EMPTY;
+			ReadingType objectType = ReadingType.EMPTY;
 
-				for ( Pillar pillar : circleArena.getPillars() ) {
-					double pillarRange = Geometry.getRangeOutsideCircle(shooterShape.getCentreX(), shooterShape.getCentreY(), currentHeading, (Circle) pillar.getShape());
-					if ( 0 <= pillarRange && pillarRange < objectRange ) {
-						objectRange = pillarRange;
-						objectType = ReadingType.WALL;
-					}
+			for ( Pillar pillar : circleArena.getPillars() ) {
+				double pillarRange = Geometry.getRangeOutsideCircle(shooterShape.getCentreX(), shooterShape.getCentreY(), currentHeading, (Circle) pillar.getShape());
+				if ( 0 <= pillarRange && pillarRange < objectRange ) {
+					objectRange = pillarRange;
+					objectType = ReadingType.WALL;
 				}
-
-				for ( Shooter shooter : arena.getGame().getShooters() ) {
-					if ( this != shooter ) {
-						double shooterRange = Geometry.getRangeOutsideCircle(shooterShape.getCentreX(), shooterShape.getCentreY(), currentHeading, (Circle) shooter.getShape());
-						if ( 0 <= shooterRange && shooterRange < objectRange ) {
-							objectRange = shooterRange;
-							objectType = ReadingType.SHOOTER;
-						}
-					}
-				}
-
-				double reading;
-				ReadingType type;
-
-				if ( arenaRange < objectRange ) {
-					reading = arenaRange;
-					type = ReadingType.WALL;
-				} else {
-					reading = objectRange;
-					type = objectType;
-				}
-
-				if ( reading > sensor.getRange() ) {
-					reading = sensor.getRange();
-					type = ReadingType.EMPTY;
-				}
-
-				sensor.updateReading(i, reading, type);
-				System.out.println(" Heading " + i + ": " + reading + " " + type);
 			}
+
+			for ( Shooter shooter : arena.getGame().getShooters() ) {
+				if ( this != shooter ) {
+					double shooterRange = Geometry.getRangeOutsideCircle(shooterShape.getCentreX(), shooterShape.getCentreY(), currentHeading, (Circle) shooter.getShape());
+					if ( 0 <= shooterRange && shooterRange < objectRange ) {
+						objectRange = shooterRange;
+						objectType = ReadingType.SHOOTER;
+					}
+				}
+			}
+
+			double reading;
+			ReadingType type;
+
+			if ( arenaRange < objectRange ) {
+				reading = arenaRange;
+				type = ReadingType.WALL;
+			} else {
+				reading = objectRange;
+				type = objectType;
+			}
+
+			if ( reading > sensor.getRange() ) {
+				reading = sensor.getRange();
+				type = ReadingType.EMPTY;
+			}
+
+			sensor.updateReading(i, reading, type);
 		}
 	}
 

@@ -4,3 +4,9 @@ group = 'codeshooter'
 version = '0.0.1-SNAPSHOT'
 
 description = """codeshooter"""
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'codeshooter.ui.Application'
+    }
+}

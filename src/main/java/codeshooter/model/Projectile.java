@@ -16,8 +16,9 @@ public class Projectile extends Entity {
 	private Color color;
 
 	private double damage;
+	private Shooter originShooter;
 
-	public Projectile(double x, double y, int radius, Color color, double damage, Heading heading, double speed) {
+	public Projectile(double x, double y, int radius, Color color, double damage, Shooter originShooter, Heading heading, double speed) {
 		this.shape = new Circle(x, y, radius);
 
 		this.dx = heading.getX() * speed;
@@ -26,6 +27,8 @@ public class Projectile extends Entity {
 		this.color = color;
 
 		this.damage = damage;
+
+		this.originShooter = originShooter;
 	}
 
 	public void draw(Graphics g) {
@@ -47,7 +50,7 @@ public class Projectile extends Entity {
 
 			for ( Shooter shooter : arena.getGame().getShooters() ) {
 				if ( Geometry.isColliding((Circle) shooter.getShape(), (Circle) shape) ) {
-					shooter.changeHealth(-damage);
+					shooter.changeHealth(-damage, originShooter);
 					setVisible(false);
 					return;
 				}

@@ -1,6 +1,7 @@
 package codeshooter.arena;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -26,6 +27,8 @@ public class CircleArena extends Arena {
 
 		this.shape = new Circle(x, y, radius);
 		this.color = color;
+
+		setPreferredSize(new Dimension((int) radius * 2, (int) radius *2));
 
 		init();
 	}

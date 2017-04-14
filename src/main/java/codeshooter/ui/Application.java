@@ -1,9 +1,11 @@
 package codeshooter.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import codeshooter.ai.HunterShooterBot;
 import codeshooter.arena.CircleArena;
@@ -28,20 +30,34 @@ public class Application extends JFrame {
 	private static final int SHOOTER_SENSOR_NUM_READINGS = 7;
 
 	private Game game;
+	private JPanel container;
+	private Topbar topbar;
+	private Sidebar sidebar;
 
 	public Application() {
-		initUI();
-
 		game = new Game();
 
 		CircleArena arena = new CircleArena(game, 0, 0, WIDTH/2, ARENA_COLOR);
-		add(arena);
 
 		arena.addPillar(new Pillar(300, 100, 40, Color.DARK_GRAY));
 		arena.addPillar(new Pillar(100, 300, 40, Color.DARK_GRAY));
 		arena.addPillar(new Pillar(10, 160, 40, Color.DARK_GRAY));
 
-		game.setShooter(new Shooter(WIDTH/2 - SHOOTER_RADIUS,
+		topbar = new Topbar();
+		sidebar = new Sidebar(game);
+
+		container = new JPanel(new BorderLayout());
+		add(container);
+
+		container.add(arena, BorderLayout.CENTER);
+		container.add(topbar, BorderLayout.PAGE_START);
+		container.add(sidebar, BorderLayout.LINE_END);
+
+		initUI();
+
+		game.setShooter(new Shooter(0,
+				"Player",
+				WIDTH/2 - SHOOTER_RADIUS,
 				WIDTH/2 - SHOOTER_RADIUS,
 				SHOOTER_RADIUS,
 				SHOOTER_COLOR,
@@ -52,7 +68,9 @@ public class Application extends JFrame {
 				SHOOTER_SENSOR_RANGE,
 				SHOOTER_SENSOR_NUM_READINGS));
 
-		Shooter enemyShooterA = new Shooter(WIDTH/2,
+		Shooter enemyShooterA = new Shooter(1,
+				"HunterShooterBotA",
+				WIDTH/2,
 				10,
 				SHOOTER_RADIUS,
 				Color.WHITE,
@@ -63,7 +81,9 @@ public class Application extends JFrame {
 				SHOOTER_SENSOR_RANGE,
 				SHOOTER_SENSOR_NUM_READINGS);
 
-		Shooter enemyShooterB = new Shooter(WIDTH/2,
+		Shooter enemyShooterB = new Shooter(2,
+				"HunterShooterBotB",
+				WIDTH/2,
 				WIDTH - SHOOTER_RADIUS*2 - 10,
 				SHOOTER_RADIUS,
 				Color.WHITE,
@@ -82,10 +102,15 @@ public class Application extends JFrame {
 
 		enemyShooterBotA.start();
 		enemyShooterBotB.start();
+
+		topbar.start();
+		sidebar.start();
 	}
 
 	private void initUI() {
-		setSize(WIDTH, HEIGHT);
+		getContentPane().add(container);
+		pack();
+
 		setTitle("Code Shooter");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);

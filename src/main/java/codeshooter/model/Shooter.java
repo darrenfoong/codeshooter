@@ -14,8 +14,13 @@ import codeshooter.arena.CircleArena;
 import codeshooter.model.Sensor.ReadingType;
 import codeshooter.utils.Geometry;
 import codeshooter.utils.Heading;
+import codeshooter.utils.Text;
 
 public class Shooter extends Entity {
+	private int id;
+	private String name;
+	private int numKills;
+
 	private Shape shape;
 	private Heading heading;
 
@@ -24,6 +29,7 @@ public class Shooter extends Entity {
 
 	private Color color;
 	private Color dirColor;
+	private static final Color infoColor = Color.BLACK;
 	private static final Color sensorColor = Color.ORANGE;
 
 	private double turnIncInRadians;
@@ -34,7 +40,11 @@ public class Shooter extends Entity {
 
 	private List<Projectile> projectiles = new ArrayList<>();
 
-	public Shooter(double x, double y, int radius, Color color, Color dirColor, double turnIncInRadians, double health, double sensorAngleInDegrees, double sensorRange, int sensorNumReadings) {
+	public Shooter(int id, String name, double x, double y, int radius, Color color, Color dirColor, double turnIncInRadians, double health, double sensorAngleInDegrees, double sensorRange, int sensorNumReadings) {
+		this.id = id;
+		this.name = name;
+		this.numKills = 0;
+
 		this.shape = new Circle(x, y, radius);
 		this.heading = new Heading();
 
@@ -46,6 +56,22 @@ public class Shooter extends Entity {
 		this.health = health;
 
 		this.sensor = new Sensor(sensorAngleInDegrees, sensorRange, sensorNumReadings);
+	}
+
+	public int getID() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getNumKills() {
+		return numKills;
+	}
+
+	public void incrementNumKills() {
+		this.numKills++;
 	}
 
 	public Shape getShape() {
@@ -71,6 +97,7 @@ public class Shooter extends Entity {
 										projectileRadius,
 										Color.YELLOW,
 										projectileDamage,
+										this,
 										heading,
 										projectileSpeed));
 	}
@@ -84,6 +111,15 @@ public class Shooter extends Entity {
 
 		if ( health <= 0 ) {
 			setVisible(false);
+		}
+	}
+
+	public void changeHealth(double delta, Shooter originShooter) {
+		health += delta;
+
+		if ( health <= 0 ) {
+			setVisible(false);
+			originShooter.incrementNumKills();
 		}
 	}
 
@@ -115,6 +151,16 @@ public class Shooter extends Entity {
 											shooterShape.getCentreY()+(shooterShape.getRadius()*heading.getY()));
 		g2d.setColor(dirColor);
 		g2d.draw(dirLine);
+
+		Text.drawCentreString(g2d, name, infoColor, 10f,
+				(int) shooterShape.getX(),
+				(int) (shooterShape.getY()+shooterShape.getRadius()*2+10),
+				(int) shooterShape.getRadius());
+
+		Text.drawCentreString(g2d, Double.toString(health), infoColor, 10f,
+				(int) shooterShape.getX(),
+				(int) (shooterShape.getY()+shooterShape.getRadius()*2-10),
+				(int) shooterShape.getRadius());
 
 		for ( Projectile projectile : projectiles ) {
 			projectile.draw(g);

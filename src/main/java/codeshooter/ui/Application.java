@@ -7,7 +7,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import codeshooter.ai.HunterShooterBot;
+import codeshooter.ai.RemoteProxyBot;
 import codeshooter.arena.CircleArena;
 import codeshooter.game.Game;
 import codeshooter.model.Pillar;
@@ -97,9 +97,8 @@ public class Application extends JFrame {
 		game.addShooter(enemyShooterA);
 		game.addShooter(enemyShooterB);
 
-		HunterShooterBot enemyShooterBotA = new HunterShooterBot(enemyShooterA);
-		HunterShooterBot enemyShooterBotB = new HunterShooterBot(enemyShooterB);
-
+		RemoteProxyBot enemyShooterBotA = new RemoteProxyBot(enemyShooterA, 5781);
+		RemoteProxyBot enemyShooterBotB = new RemoteProxyBot(enemyShooterB, 5782);
 		enemyShooterBotA.start();
 		enemyShooterBotB.start();
 

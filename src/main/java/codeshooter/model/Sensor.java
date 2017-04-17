@@ -37,8 +37,16 @@ public class Sensor {
 		return readingIntervalInDegrees;
 	}
 
+	public double[] getReadings() {
+		return readings;
+	}
+
 	public double getReading(int i) {
 		return readings[i];
+	}
+
+	public ReadingType[] getTypes() {
+		return types;
 	}
 
 	public ReadingType getType(int i) {

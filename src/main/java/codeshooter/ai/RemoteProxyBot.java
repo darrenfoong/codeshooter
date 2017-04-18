@@ -36,8 +36,8 @@ public class RemoteProxyBot extends ShooterBot {
 
 					while ( true ) {
 						ShooterState state = new ShooterState(shooter.getHealth(),
-																shooter.getSensor().getReadings(),
-																shooter.getSensor().getTypes());
+								shooter.getSensor().getReadings(),
+								shooter.getSensor().getTypes());
 
 						out.writeObject(state);
 						out.flush();

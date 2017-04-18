@@ -127,7 +127,7 @@ public class Application extends JFrame {
 		getContentPane().add(container);
 		pack();
 
-		setTitle("Code Shooter");
+		setTitle("Codeshooter");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}

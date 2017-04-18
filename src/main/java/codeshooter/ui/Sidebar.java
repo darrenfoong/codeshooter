@@ -39,7 +39,7 @@ public class Sidebar extends JPanel {
 		setPreferredSize(new Dimension(WIDTH, 0));
 	}
 
-	public void update() {
+	private void update() {
 		removeAll();
 
 		for ( Shooter shooter : game.getShooters() ) {

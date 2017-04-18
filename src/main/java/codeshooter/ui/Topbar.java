@@ -43,7 +43,7 @@ public class Topbar extends JPanel {
 		timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 	}
 
-	public void update() {
+	private void update() {
 		secondsElapsed++;
 		timeLabel.setText(Integer.toString(secondsElapsed));
 	}

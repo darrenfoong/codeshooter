@@ -15,11 +15,13 @@ public class RemoteProxyBot extends ShooterBot {
 
 	private int port;
 
-	public RemoteProxyBot(Shooter shooter, int port) {
-		this.shooter = shooter;
+	public RemoteProxyBot(int port) {
 		this.port = port;
+	}
 
-		this.thread = new Thread() {
+	@Override
+	public void start(Shooter shooter) {
+		runnable = new Runnable() {
 			@Override
 			public void run() {
 				try ( ServerSocket serverSocket = new ServerSocket(port);
@@ -51,5 +53,12 @@ public class RemoteProxyBot extends ShooterBot {
 				}
 			}
 		};
+
+		new Thread(runnable).start();
+	}
+
+	@Override
+	public int getKey(ShooterState shooterState) {
+		return 0;
 	}
 }

@@ -69,7 +69,7 @@ public class Application extends JFrame {
 				SHOOTER_SENSOR_NUM_READINGS));
 
 		Shooter enemyShooterA = new Shooter(1,
-				"HunterShooterBotA",
+				"BotA",
 				WIDTH/2,
 				10,
 				SHOOTER_RADIUS,
@@ -82,7 +82,7 @@ public class Application extends JFrame {
 				SHOOTER_SENSOR_NUM_READINGS);
 
 		Shooter enemyShooterB = new Shooter(2,
-				"HunterShooterBotB",
+				"BotB",
 				WIDTH/2,
 				WIDTH - SHOOTER_RADIUS*2 - 10,
 				SHOOTER_RADIUS,
@@ -97,10 +97,10 @@ public class Application extends JFrame {
 		game.addShooter(enemyShooterA);
 		game.addShooter(enemyShooterB);
 
-		RemoteProxyBot enemyShooterBotA = new RemoteProxyBot(enemyShooterA, 5781);
-		RemoteProxyBot enemyShooterBotB = new RemoteProxyBot(enemyShooterB, 5782);
-		enemyShooterBotA.start();
-		enemyShooterBotB.start();
+		RemoteProxyBot enemyShooterBotA = new RemoteProxyBot(5781);
+		RemoteProxyBot enemyShooterBotB = new RemoteProxyBot(5782);
+		enemyShooterBotA.start(enemyShooterA);
+		enemyShooterBotB.start(enemyShooterB);
 
 		topbar.start();
 		sidebar.start();

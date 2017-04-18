@@ -7,12 +7,12 @@ import java.net.Socket;
 
 import codeshooter.model.ShooterState;
 
-public class RemoteRandomShooterBot {
+public class RemoteHunterShooterBot {
 	public static void main(String[] args) {
 		String hostname = args[0];
 		int port = Integer.parseInt(args[1]);
 
-		ShooterBot shooterBot = new RandomShooterBot();
+		ShooterBot shooterBot = new HunterShooterBot();
 
 		try ( Socket socket = new Socket(hostname, port);
 				ObjectInputStream in = new ObjectInputStream(socket.getInputStream());

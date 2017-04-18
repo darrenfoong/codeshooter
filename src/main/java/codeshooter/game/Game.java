@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import codeshooter.arena.Arena;
 import codeshooter.model.Entity;
@@ -20,6 +21,8 @@ public class Game {
 	private Shooter mainShooter;
 	private List<Target> targets = new ArrayList<>();
 	private List<Shooter> shooters = new ArrayList<>();
+
+	private static Logger LOGGER = Logger.getLogger(Game.class.getName());
 
 	public Game() {
 		this.keyAdapter = new TAdapter();
@@ -38,6 +41,8 @@ public class Game {
 	}
 
 	public void setShooter(Shooter shooter) {
+		LOGGER.info("Adding main shooter" + shooter.getName());
+
 		this.mainShooter = shooter;
 		shooters.add(shooter);
 	}
@@ -47,6 +52,8 @@ public class Game {
 	}
 
 	public void addShooter(Shooter shooter) {
+		LOGGER.info("Adding shooter " + shooter.getName());
+
 		shooters.add(shooter);
 	}
 

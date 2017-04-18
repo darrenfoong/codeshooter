@@ -2,6 +2,7 @@ package codeshooter.ui;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.util.logging.Logger;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -16,6 +17,8 @@ public class Topbar extends JPanel {
 	private int secondsElapsed = 0;
 	private JLabel timeLabel = new JLabel();
 
+	private static Logger LOGGER = Logger.getLogger(Topbar.class.getName());
+
 	private Thread topbarThread = new Thread() {
 		@Override
 		public void run() {
@@ -25,6 +28,7 @@ public class Topbar extends JPanel {
 				try {
 					Thread.sleep(UPDATE_INTERVAL_IN_MS);
 				} catch ( InterruptedException e ) {
+					LOGGER.severe("Thread interrupted");
 					e.printStackTrace();
 				}
 			}

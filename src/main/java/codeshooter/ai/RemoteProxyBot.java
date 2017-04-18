@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 import codeshooter.model.Shooter;
 import codeshooter.model.ShooterState;
@@ -15,7 +16,11 @@ public class RemoteProxyBot extends ShooterBot {
 
 	private int port;
 
+	private static Logger LOGGER = Logger.getLogger(RemoteProxyBot.class.getName());
+
 	public RemoteProxyBot(int port) {
+		LOGGER.info("Creating RemoteProxyBot listening at port " + port);
+
 		this.port = port;
 	}
 
@@ -24,10 +29,14 @@ public class RemoteProxyBot extends ShooterBot {
 		runnable = new Runnable() {
 			@Override
 			public void run() {
+				LOGGER.info("Waiting for connection at port " + port);
+
 				try ( ServerSocket serverSocket = new ServerSocket(port);
 						Socket clientSocket = serverSocket.accept();
 						ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
 						ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream()); ) {
+					LOGGER.info("Connected at port " + port);
+
 					while ( true ) {
 						ShooterState state = new ShooterState(shooter.getHealth(),
 																shooter.getSensor().getReadings(),
@@ -48,7 +57,10 @@ public class RemoteProxyBot extends ShooterBot {
 
 						Thread.sleep(KEY_WAIT_IN_MS);
 					}
-				} catch ( IOException | InterruptedException e ) {
+				} catch ( InterruptedException e ) {
+					LOGGER.severe("Thread interrupted");
+				} catch ( IOException e ) {
+					LOGGER.severe("IOException");
 					e.printStackTrace();
 				}
 			}

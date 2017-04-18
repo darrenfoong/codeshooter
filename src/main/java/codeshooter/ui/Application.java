@@ -3,6 +3,7 @@ package codeshooter.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -34,9 +35,14 @@ public class Application extends JFrame {
 	private Topbar topbar;
 	private Sidebar sidebar;
 
+	private static Logger LOGGER = Logger.getLogger(Application.class.getName());
+
 	public Application() {
+		LOGGER.info("Starting Codeshooter");
+
 		game = new Game();
 
+		LOGGER.info("Loading CircleArena");
 		CircleArena arena = new CircleArena(game, 0, 0, WIDTH/2, ARENA_COLOR);
 
 		arena.addPillar(new Pillar(300, 100, 40, Color.DARK_GRAY));
@@ -53,6 +59,10 @@ public class Application extends JFrame {
 		container.add(topbar, BorderLayout.PAGE_START);
 		container.add(sidebar, BorderLayout.LINE_END);
 
+		topbar.start();
+		sidebar.start();
+
+		LOGGER.info("Loading UI");
 		initUI();
 
 		game.setShooter(new Shooter(0,
@@ -101,9 +111,6 @@ public class Application extends JFrame {
 		RemoteProxyBot enemyShooterBotB = new RemoteProxyBot(5782);
 		enemyShooterBotA.start(enemyShooterA);
 		enemyShooterBotB.start(enemyShooterB);
-
-		topbar.start();
-		sidebar.start();
 	}
 
 	private void initUI() {

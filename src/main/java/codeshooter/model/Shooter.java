@@ -14,9 +14,12 @@ import codeshooter.arena.CircleArena;
 import codeshooter.model.Sensor.ReadingType;
 import codeshooter.utils.Geometry;
 import codeshooter.utils.Heading;
+import codeshooter.utils.Properties;
 import codeshooter.utils.Text;
 
 public class Shooter extends Entity {
+	private static Properties PROPERTIES = Properties.getInstance();
+
 	private int id;
 	private String name;
 	private int numKills;
@@ -29,8 +32,8 @@ public class Shooter extends Entity {
 
 	private Color color;
 	private Color dirColor;
-	private static final Color infoColor = Color.BLACK;
-	private static final Color sensorColor = Color.ORANGE;
+	private static final Color INFO_COLOR = Color.decode(PROPERTIES.getProperty(Properties.SHOOTER_INFO_COLOR));
+	private static final Color SENSOR_COLOR = Color.decode(PROPERTIES.getProperty(Properties.SHOOTER_SENSOR_COLOR));
 
 	private double turnIncInRadians;
 
@@ -85,9 +88,9 @@ public class Shooter extends Entity {
 	public void fire() {
 		Circle shooterShape = (Circle) shape;
 
-		int projectileRadius = 4;
-		int projectileDamage = 10;
-		int projectileSpeed = 10;
+		int projectileRadius = Integer.parseInt(PROPERTIES.getProperty(Properties.PROJECTILE_RADIUS));
+		int projectileDamage = Integer.parseInt(PROPERTIES.getProperty(Properties.PROJECTILE_DAMAGE));
+		int projectileSpeed = Integer.parseInt(PROPERTIES.getProperty(Properties.PROJECTILE_SPEED));
 
 		double projectileX = shooterShape.getCentreX() - projectileRadius + shooterShape.getRadius() * heading.getX();
 		double projectileY = shooterShape.getCentreY() - projectileRadius + shooterShape.getRadius() * heading.getY();
@@ -95,7 +98,7 @@ public class Shooter extends Entity {
 		projectiles.add(new Projectile(projectileX,
 										projectileY,
 										projectileRadius,
-										Color.YELLOW,
+										Color.decode(PROPERTIES.getProperty(Properties.PROJECTILE_COLOR)),
 										projectileDamage,
 										this,
 										heading,
@@ -140,7 +143,7 @@ public class Shooter extends Entity {
 											sensor.getAngle(),
 											Arc2D.PIE);
 
-		g2d.setColor(sensorColor);
+		g2d.setColor(SENSOR_COLOR);
 		g2d.draw(sensorArc);
 
 		shape.draw(color, g2d);
@@ -152,12 +155,12 @@ public class Shooter extends Entity {
 		g2d.setColor(dirColor);
 		g2d.draw(dirLine);
 
-		Text.drawCentreString(g2d, name, infoColor, 10f,
+		Text.drawCentreString(g2d, name, INFO_COLOR, 10f,
 				(int) shooterShape.getX(),
 				(int) (shooterShape.getY()+shooterShape.getRadius()*2+10),
 				(int) shooterShape.getRadius());
 
-		Text.drawCentreString(g2d, Double.toString(health), infoColor, 10f,
+		Text.drawCentreString(g2d, Double.toString(health), INFO_COLOR, 10f,
 				(int) shooterShape.getX(),
 				(int) (shooterShape.getY()+shooterShape.getRadius()*2-10),
 				(int) shooterShape.getRadius());

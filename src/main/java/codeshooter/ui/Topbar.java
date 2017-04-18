@@ -8,11 +8,15 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import codeshooter.utils.Properties;
+
 public class Topbar extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	private static final int HEIGHT = 20;
-	private static final long UPDATE_INTERVAL_IN_MS = 1000;
+	private static Properties PROPERTIES = Properties.getInstance();
+
+	private static final int HEIGHT = Integer.parseInt(PROPERTIES.getProperty(Properties.TOPBAR_HEIGHT));
+	private static final long UPDATE_INTERVAL_IN_MS = Long.parseLong(PROPERTIES.getProperty(Properties.TOPBAR_UPDATE_INTERVAL_IN_MS));
 
 	private int secondsElapsed = 0;
 	private JLabel timeLabel = new JLabel();

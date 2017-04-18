@@ -13,22 +13,32 @@ import codeshooter.arena.CircleArena;
 import codeshooter.game.Game;
 import codeshooter.model.Pillar;
 import codeshooter.model.Shooter;
+import codeshooter.utils.Properties;
 
 public class Application extends JFrame {
 	private static final long serialVersionUID = 1L;
 
-	private static final int WIDTH = 400;
-	private static final int HEIGHT = 400;
+	private static Properties PROPERTIES = Properties.getInstance();
 
-	private static final Color ARENA_COLOR = Color.LIGHT_GRAY;
+	private static final int WIDTH = Integer.parseInt(PROPERTIES.getProperty(Properties.ARENA_RADIUS))*2;
+	private static final int HEIGHT = Integer.parseInt(PROPERTIES.getProperty(Properties.ARENA_RADIUS))*2;
 
-	private static final int SHOOTER_RADIUS = 20;
-	private static final Color SHOOTER_COLOR = Color.BLUE;
-	private static final Color SHOOTER_DIR_COLOR = Color.RED;
-	private static final double SHOOTER_TURN_INC_RADIANS = 0.05;
-	private static final double SHOOTER_SENSOR_ANGLE_IN_DEGREES = 30;
-	private static final double SHOOTER_SENSOR_RANGE = 200;
-	private static final int SHOOTER_SENSOR_NUM_READINGS = 7;
+	private static final Color ARENA_COLOR = Color.decode(PROPERTIES.getProperty(Properties.ARENA_COLOR));
+
+	private static final int SHOOTER_RADIUS = Integer.parseInt(PROPERTIES.getProperty(Properties.SHOOTER_RADIUS));
+	private static final Color SHOOTER_COLOR = Color.decode(PROPERTIES.getProperty(Properties.SHOOTER_COLOR));
+	private static final Color SHOOTER_DIR_COLOR = Color.decode(PROPERTIES.getProperty(Properties.SHOOTER_DIR_COLOR));
+	private static final double SHOOTER_HEALTH = Double.parseDouble(PROPERTIES.getProperty(Properties.SHOOTER_HEALTH));
+	private static final double SHOOTER_TURN_INC_RADIANS = Double.parseDouble(PROPERTIES.getProperty(Properties.SHOOTER_TURN_INC_IN_RADIANS));
+	private static final double SHOOTER_SENSOR_ANGLE_IN_DEGREES = Double.parseDouble(PROPERTIES.getProperty(Properties.SHOOTER_SENSOR_ANGLE_IN_DEGREES));
+	private static final double SHOOTER_SENSOR_RANGE = Double.parseDouble(PROPERTIES.getProperty(Properties.SHOOTER_SENSOR_RANGE));
+	private static final int SHOOTER_SENSOR_NUM_READINGS = Integer.parseInt(PROPERTIES.getProperty(Properties.SHOOTER_SENSOR_NUM_READINGS));
+
+	private static final Color BOT_COLOR = Color.decode(PROPERTIES.getProperty(Properties.BOT_COLOR));
+	private static final Color BOT_DIR_COLOR = Color.decode(PROPERTIES.getProperty(Properties.BOT_DIR_COLOR));
+	private static final double BOT_HEALTH = Double.parseDouble(PROPERTIES.getProperty(Properties.BOT_HEALTH));
+
+	private static final int PORT = Integer.parseInt(PROPERTIES.getProperty(Properties.PORT));
 
 	private Game game;
 	private JPanel container;
@@ -73,7 +83,7 @@ public class Application extends JFrame {
 				SHOOTER_COLOR,
 				SHOOTER_DIR_COLOR,
 				SHOOTER_TURN_INC_RADIANS,
-				100,
+				SHOOTER_HEALTH,
 				SHOOTER_SENSOR_ANGLE_IN_DEGREES,
 				SHOOTER_SENSOR_RANGE,
 				SHOOTER_SENSOR_NUM_READINGS));
@@ -83,10 +93,10 @@ public class Application extends JFrame {
 				WIDTH/2,
 				10,
 				SHOOTER_RADIUS,
-				Color.WHITE,
-				Color.RED,
+				BOT_COLOR,
+				BOT_DIR_COLOR,
 				SHOOTER_TURN_INC_RADIANS,
-				100,
+				BOT_HEALTH,
 				SHOOTER_SENSOR_ANGLE_IN_DEGREES,
 				SHOOTER_SENSOR_RANGE,
 				SHOOTER_SENSOR_NUM_READINGS);
@@ -96,10 +106,10 @@ public class Application extends JFrame {
 				WIDTH/2,
 				WIDTH - SHOOTER_RADIUS*2 - 10,
 				SHOOTER_RADIUS,
-				Color.WHITE,
-				Color.RED,
+				BOT_COLOR,
+				BOT_DIR_COLOR,
 				SHOOTER_TURN_INC_RADIANS,
-				100,
+				BOT_HEALTH,
 				SHOOTER_SENSOR_ANGLE_IN_DEGREES,
 				SHOOTER_SENSOR_RANGE,
 				SHOOTER_SENSOR_NUM_READINGS);
@@ -107,8 +117,8 @@ public class Application extends JFrame {
 		game.addShooter(enemyShooterA);
 		game.addShooter(enemyShooterB);
 
-		RemoteProxyBot enemyShooterBotA = new RemoteProxyBot(5781);
-		RemoteProxyBot enemyShooterBotB = new RemoteProxyBot(5782);
+		RemoteProxyBot enemyShooterBotA = new RemoteProxyBot(PORT+1);
+		RemoteProxyBot enemyShooterBotB = new RemoteProxyBot(PORT+2);
 		enemyShooterBotA.start(enemyShooterA);
 		enemyShooterBotB.start(enemyShooterB);
 	}

@@ -11,9 +11,6 @@ import codeshooter.model.Shooter;
 import codeshooter.model.ShooterState;
 
 public class RemoteProxyBot extends ShooterBot {
-	private static final long KEY_DURATION_IN_MS = 50;
-	private static final long KEY_WAIT_IN_MS = 50;
-
 	private int port;
 
 	private static Logger LOGGER = Logger.getLogger(RemoteProxyBot.class.getName());

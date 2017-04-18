@@ -8,12 +8,15 @@ import javax.swing.JPanel;
 
 import codeshooter.game.Game;
 import codeshooter.model.Shooter;
+import codeshooter.utils.Properties;
 
 public class Sidebar extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	private static final int WIDTH = 300;
-	private static final long UPDATE_INTERVAL_IN_MS = 10;
+	private static Properties PROPERTIES = Properties.getInstance();
+
+	private static final int WIDTH = Integer.parseInt(PROPERTIES.getProperty(Properties.SIDEBAR_WIDTH));
+	private static final long UPDATE_INTERVAL_IN_MS = Long.parseLong(PROPERTIES.getProperty(Properties.SIDEBAR_UPDATE_INTERVAL_IN_MS));
 
 	private Game game;
 

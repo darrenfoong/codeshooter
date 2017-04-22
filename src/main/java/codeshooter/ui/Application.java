@@ -7,6 +7,8 @@ import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 import codeshooter.ai.RemoteProxyBot;
 import codeshooter.arena.CircleArena;
@@ -136,6 +138,17 @@ public class Application extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				try {
+					for ( LookAndFeelInfo info : UIManager.getInstalledLookAndFeels() ) {
+						if ( "Nimbus".equals(info.getName()) ) {
+							UIManager.setLookAndFeel(info.getClassName());
+							break;
+						}
+					}
+				} catch ( Exception e ) {
+					LOGGER.warning("Nimbus look and feel not available");
+				}
+
 				Application ex = new Application();
 				ex.setVisible(true);
 			}

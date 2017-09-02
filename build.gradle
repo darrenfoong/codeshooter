@@ -5,6 +5,9 @@ version = '0.0.1-SNAPSHOT'
 
 description = """codeshooter"""
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 jar {
     manifest {
         attributes 'Main-Class': 'codeshooter.ui.Application'

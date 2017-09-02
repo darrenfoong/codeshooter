@@ -41,7 +41,8 @@ public class Application extends JFrame {
   private static final int SHOOTER_SENSOR_NUM_READINGS =
       Integer.parseInt(PROPERTIES.getProperty(GameProperties.SHOOTER_SENSOR_NUM_READINGS));
 
-  private static final Color BOT_COLOR = Color.decode(PROPERTIES.getProperty(GameProperties.BOT_COLOR));
+  private static final Color BOT_COLOR =
+      Color.decode(PROPERTIES.getProperty(GameProperties.BOT_COLOR));
   private static final Color BOT_DIR_COLOR =
       Color.decode(PROPERTIES.getProperty(GameProperties.BOT_DIR_COLOR));
   private static final double BOT_HEALTH =

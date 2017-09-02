@@ -3,9 +3,9 @@ package codeshooter.model;
 import codeshooter.arena.Arena;
 import codeshooter.arena.CircleArena;
 import codeshooter.model.Sensor.ReadingType;
+import codeshooter.utils.GameProperties;
 import codeshooter.utils.Geometry;
 import codeshooter.utils.Heading;
-import codeshooter.utils.GameProperties;
 import codeshooter.utils.Text;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -99,8 +99,10 @@ public class Shooter extends Entity {
   public void fire() {
     Circle shooterShape = (Circle) shape;
 
-    int projectileRadius = Integer.parseInt(PROPERTIES.getProperty(GameProperties.PROJECTILE_RADIUS));
-    int projectileDamage = Integer.parseInt(PROPERTIES.getProperty(GameProperties.PROJECTILE_DAMAGE));
+    int projectileRadius =
+        Integer.parseInt(PROPERTIES.getProperty(GameProperties.PROJECTILE_RADIUS));
+    int projectileDamage =
+        Integer.parseInt(PROPERTIES.getProperty(GameProperties.PROJECTILE_DAMAGE));
     int projectileSpeed = Integer.parseInt(PROPERTIES.getProperty(GameProperties.PROJECTILE_SPEED));
 
     double projectileX =

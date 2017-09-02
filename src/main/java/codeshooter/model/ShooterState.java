@@ -27,11 +27,11 @@ public class ShooterState implements Serializable {
   }
 
   public double[] getReadings() {
-    return readings;
+    return readings.clone();
   }
 
   public ReadingType[] getTypes() {
-    return types;
+    return types.clone();
   }
 
   @Override

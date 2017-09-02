@@ -1,6 +1,6 @@
 package codeshooter.ui;
 
-import codeshooter.utils.Properties;
+import codeshooter.utils.GameProperties;
 import java.awt.*;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -8,12 +8,12 @@ import javax.swing.*;
 public class Topbar extends JPanel {
   private static final long serialVersionUID = 1L;
 
-  private static Properties PROPERTIES = Properties.getInstance();
+  private static GameProperties PROPERTIES = GameProperties.getInstance();
 
   private static final int HEIGHT =
-      Integer.parseInt(PROPERTIES.getProperty(Properties.TOPBAR_HEIGHT));
+      Integer.parseInt(PROPERTIES.getProperty(GameProperties.TOPBAR_HEIGHT));
   private static final long UPDATE_INTERVAL_IN_MS =
-      Long.parseLong(PROPERTIES.getProperty(Properties.TOPBAR_UPDATE_INTERVAL_IN_MS));
+      Long.parseLong(PROPERTIES.getProperty(GameProperties.TOPBAR_UPDATE_INTERVAL_IN_MS));
 
   private int secondsElapsed = 0;
   private JLabel timeLabel = new JLabel();

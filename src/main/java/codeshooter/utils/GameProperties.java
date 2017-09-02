@@ -2,12 +2,13 @@ package codeshooter.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Properties;
 import java.util.logging.Logger;
 
-public class Properties extends java.util.Properties {
+public class GameProperties extends Properties {
   private static final long serialVersionUID = 1L;
 
-  private static Properties instance = null;
+  private static GameProperties instance = null;
 
   public static final String ARENA_RADIUS = "arena.radius";
   public static final String ARENA_COLOR = "arena.color";
@@ -42,13 +43,13 @@ public class Properties extends java.util.Properties {
 
   public static final String PORT = "port";
 
-  private static Logger LOGGER = Logger.getLogger(Properties.class.getName());
+  private static Logger LOGGER = Logger.getLogger(GameProperties.class.getName());
 
-  public static Properties getInstance() {
+  public static synchronized GameProperties getInstance() {
     if (instance == null) {
       try (InputStream in =
-          Properties.class.getClassLoader().getResourceAsStream("codeshooter.properties")) {
-        instance = new Properties();
+          GameProperties.class.getClassLoader().getResourceAsStream("codeshooter.properties")) {
+        instance = new GameProperties();
         instance.load(in);
       } catch (IOException e) {
         LOGGER.severe("IOException");

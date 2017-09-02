@@ -5,7 +5,7 @@ import codeshooter.arena.CircleArena;
 import codeshooter.game.Game;
 import codeshooter.model.Pillar;
 import codeshooter.model.Shooter;
-import codeshooter.utils.Properties;
+import codeshooter.utils.GameProperties;
 import java.awt.*;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -14,40 +14,40 @@ import javax.swing.UIManager.LookAndFeelInfo;
 public class Application extends JFrame {
   private static final long serialVersionUID = 1L;
 
-  private static Properties PROPERTIES = Properties.getInstance();
+  private static GameProperties PROPERTIES = GameProperties.getInstance();
 
   private static final int WIDTH =
-      Integer.parseInt(PROPERTIES.getProperty(Properties.ARENA_RADIUS)) * 2;
+      Integer.parseInt(PROPERTIES.getProperty(GameProperties.ARENA_RADIUS)) * 2;
   private static final int HEIGHT =
-      Integer.parseInt(PROPERTIES.getProperty(Properties.ARENA_RADIUS)) * 2;
+      Integer.parseInt(PROPERTIES.getProperty(GameProperties.ARENA_RADIUS)) * 2;
 
   private static final Color ARENA_COLOR =
-      Color.decode(PROPERTIES.getProperty(Properties.ARENA_COLOR));
+      Color.decode(PROPERTIES.getProperty(GameProperties.ARENA_COLOR));
 
   private static final int SHOOTER_RADIUS =
-      Integer.parseInt(PROPERTIES.getProperty(Properties.SHOOTER_RADIUS));
+      Integer.parseInt(PROPERTIES.getProperty(GameProperties.SHOOTER_RADIUS));
   private static final Color SHOOTER_COLOR =
-      Color.decode(PROPERTIES.getProperty(Properties.SHOOTER_COLOR));
+      Color.decode(PROPERTIES.getProperty(GameProperties.SHOOTER_COLOR));
   private static final Color SHOOTER_DIR_COLOR =
-      Color.decode(PROPERTIES.getProperty(Properties.SHOOTER_DIR_COLOR));
+      Color.decode(PROPERTIES.getProperty(GameProperties.SHOOTER_DIR_COLOR));
   private static final double SHOOTER_HEALTH =
-      Double.parseDouble(PROPERTIES.getProperty(Properties.SHOOTER_HEALTH));
+      Double.parseDouble(PROPERTIES.getProperty(GameProperties.SHOOTER_HEALTH));
   private static final double SHOOTER_TURN_INC_RADIANS =
-      Double.parseDouble(PROPERTIES.getProperty(Properties.SHOOTER_TURN_INC_IN_RADIANS));
+      Double.parseDouble(PROPERTIES.getProperty(GameProperties.SHOOTER_TURN_INC_IN_RADIANS));
   private static final double SHOOTER_SENSOR_ANGLE_IN_DEGREES =
-      Double.parseDouble(PROPERTIES.getProperty(Properties.SHOOTER_SENSOR_ANGLE_IN_DEGREES));
+      Double.parseDouble(PROPERTIES.getProperty(GameProperties.SHOOTER_SENSOR_ANGLE_IN_DEGREES));
   private static final double SHOOTER_SENSOR_RANGE =
-      Double.parseDouble(PROPERTIES.getProperty(Properties.SHOOTER_SENSOR_RANGE));
+      Double.parseDouble(PROPERTIES.getProperty(GameProperties.SHOOTER_SENSOR_RANGE));
   private static final int SHOOTER_SENSOR_NUM_READINGS =
-      Integer.parseInt(PROPERTIES.getProperty(Properties.SHOOTER_SENSOR_NUM_READINGS));
+      Integer.parseInt(PROPERTIES.getProperty(GameProperties.SHOOTER_SENSOR_NUM_READINGS));
 
-  private static final Color BOT_COLOR = Color.decode(PROPERTIES.getProperty(Properties.BOT_COLOR));
+  private static final Color BOT_COLOR = Color.decode(PROPERTIES.getProperty(GameProperties.BOT_COLOR));
   private static final Color BOT_DIR_COLOR =
-      Color.decode(PROPERTIES.getProperty(Properties.BOT_DIR_COLOR));
+      Color.decode(PROPERTIES.getProperty(GameProperties.BOT_DIR_COLOR));
   private static final double BOT_HEALTH =
-      Double.parseDouble(PROPERTIES.getProperty(Properties.BOT_HEALTH));
+      Double.parseDouble(PROPERTIES.getProperty(GameProperties.BOT_HEALTH));
 
-  private static final int PORT = Integer.parseInt(PROPERTIES.getProperty(Properties.PORT));
+  private static final int PORT = Integer.parseInt(PROPERTIES.getProperty(GameProperties.PORT));
 
   private Game game;
   private JPanel container;

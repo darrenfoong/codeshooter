@@ -2,15 +2,15 @@ package codeshooter.ai;
 
 import codeshooter.model.Shooter;
 import codeshooter.model.ShooterState;
-import codeshooter.utils.Properties;
+import codeshooter.utils.GameProperties;
 
 public abstract class ShooterBot {
-  private static Properties PROPERTIES = Properties.getInstance();
+  private static GameProperties PROPERTIES = GameProperties.getInstance();
 
   protected static final long KEY_DURATION_IN_MS =
-      Long.parseLong(PROPERTIES.getProperty(Properties.BOT_KEY_DURATION_IN_MS));
+      Long.parseLong(PROPERTIES.getProperty(GameProperties.BOT_KEY_DURATION_IN_MS));
   protected static final long KEY_WAIT_IN_MS =
-      Long.parseLong(PROPERTIES.getProperty(Properties.BOT_KEY_WAIT_IN_MS));
+      Long.parseLong(PROPERTIES.getProperty(GameProperties.BOT_KEY_WAIT_IN_MS));
   protected Runnable runnable;
 
   protected class ShooterBotRunnable implements Runnable {

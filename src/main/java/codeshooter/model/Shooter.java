@@ -5,7 +5,7 @@ import codeshooter.arena.CircleArena;
 import codeshooter.model.Sensor.ReadingType;
 import codeshooter.utils.Geometry;
 import codeshooter.utils.Heading;
-import codeshooter.utils.Properties;
+import codeshooter.utils.GameProperties;
 import codeshooter.utils.Text;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Shooter extends Entity {
-  private static Properties PROPERTIES = Properties.getInstance();
+  private static GameProperties PROPERTIES = GameProperties.getInstance();
 
   private int id;
   private String name;
@@ -30,9 +30,9 @@ public class Shooter extends Entity {
   private Color color;
   private Color dirColor;
   private static final Color INFO_COLOR =
-      Color.decode(PROPERTIES.getProperty(Properties.SHOOTER_INFO_COLOR));
+      Color.decode(PROPERTIES.getProperty(GameProperties.SHOOTER_INFO_COLOR));
   private static final Color SENSOR_COLOR =
-      Color.decode(PROPERTIES.getProperty(Properties.SHOOTER_SENSOR_COLOR));
+      Color.decode(PROPERTIES.getProperty(GameProperties.SHOOTER_SENSOR_COLOR));
 
   private double turnIncInRadians;
 
@@ -99,9 +99,9 @@ public class Shooter extends Entity {
   public void fire() {
     Circle shooterShape = (Circle) shape;
 
-    int projectileRadius = Integer.parseInt(PROPERTIES.getProperty(Properties.PROJECTILE_RADIUS));
-    int projectileDamage = Integer.parseInt(PROPERTIES.getProperty(Properties.PROJECTILE_DAMAGE));
-    int projectileSpeed = Integer.parseInt(PROPERTIES.getProperty(Properties.PROJECTILE_SPEED));
+    int projectileRadius = Integer.parseInt(PROPERTIES.getProperty(GameProperties.PROJECTILE_RADIUS));
+    int projectileDamage = Integer.parseInt(PROPERTIES.getProperty(GameProperties.PROJECTILE_DAMAGE));
+    int projectileSpeed = Integer.parseInt(PROPERTIES.getProperty(GameProperties.PROJECTILE_SPEED));
 
     double projectileX =
         shooterShape.getCentreX() - projectileRadius + shooterShape.getRadius() * heading.getX();
@@ -113,7 +113,7 @@ public class Shooter extends Entity {
             projectileX,
             projectileY,
             projectileRadius,
-            Color.decode(PROPERTIES.getProperty(Properties.PROJECTILE_COLOR)),
+            Color.decode(PROPERTIES.getProperty(GameProperties.PROJECTILE_COLOR)),
             projectileDamage,
             this,
             heading,

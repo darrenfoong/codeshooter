@@ -62,7 +62,7 @@ public class Application extends JFrame {
     game = new Game();
 
     LOGGER.info("Loading CircleArena");
-    CircleArena arena = new CircleArena(game, 0, 0, WIDTH / 2, ARENA_COLOR);
+    CircleArena arena = new CircleArena(game, 0, 0, (double) WIDTH / 2, ARENA_COLOR);
 
     arena.addPillar(new Pillar(300, 100, 40, Color.DARK_GRAY));
     arena.addPillar(new Pillar(100, 300, 40, Color.DARK_GRAY));
@@ -103,7 +103,7 @@ public class Application extends JFrame {
         new Shooter(
             1,
             "BotA",
-            WIDTH / 2,
+            (double) WIDTH / 2,
             10,
             SHOOTER_RADIUS,
             BOT_COLOR,
@@ -118,7 +118,7 @@ public class Application extends JFrame {
         new Shooter(
             2,
             "BotB",
-            WIDTH / 2,
+            (double) WIDTH / 2,
             WIDTH - SHOOTER_RADIUS * 2 - 10,
             SHOOTER_RADIUS,
             BOT_COLOR,

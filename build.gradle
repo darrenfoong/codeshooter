@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'findbugs'
 
 group = 'codeshooter'
 version = '0.0.1-SNAPSHOT'
@@ -7,6 +8,10 @@ description = """codeshooter"""
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
 
 jar {
     manifest {

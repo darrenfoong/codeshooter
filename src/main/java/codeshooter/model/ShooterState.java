@@ -36,21 +36,21 @@ public class ShooterState implements Serializable {
 
   @Override
   public String toString() {
-    String res = "";
+    StringBuilder res = new StringBuilder();
 
-    res += "Health: " + health + "; Readings: ";
+    res.append("Health: " + health + "; Readings: ");
 
     for (int i = 0; i < readings.length; i++) {
-      res += readings[i] + " ";
+      res.append(readings[i] + " ");
     }
 
-    res += "; Types: ";
+    res.append("; Types: ");
 
     for (int i = 0; i < types.length; i++) {
-      res += types[i] + " ";
+      res.append(types[i] + " ");
     }
 
-    return res;
+    return res.toString();
   }
 
   private byte[] toByteArray() {

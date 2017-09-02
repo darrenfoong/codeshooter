@@ -16,9 +16,9 @@ public class Sidebar extends JPanel {
   private static final long UPDATE_INTERVAL_IN_MS =
       Long.parseLong(PROPERTIES.getProperty(GameProperties.SIDEBAR_UPDATE_INTERVAL_IN_MS));
 
-  private Game game;
+  private transient Game game;
 
-  private Thread sidebarThread =
+  private transient Thread sidebarThread =
       new Thread() {
         @Override
         public void run() {

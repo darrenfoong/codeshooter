@@ -12,10 +12,10 @@ import java.util.List;
 public class CircleArena extends Arena {
   private static final long serialVersionUID = 1L;
 
-  private Shape shape;
-  private Color color;
+  private transient Shape shape;
+  private transient Color color;
 
-  protected List<Pillar> pillars = new ArrayList<>();
+  protected transient List<Pillar> pillars = new ArrayList<>();
 
   public CircleArena(Game game, double x, double y, double radius, Color color) {
     super(game);

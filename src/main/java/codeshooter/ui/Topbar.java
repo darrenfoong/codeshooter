@@ -20,7 +20,7 @@ public class Topbar extends JPanel {
 
   private static Logger LOGGER = Logger.getLogger(Topbar.class.getName());
 
-  private Thread topbarThread =
+  private transient Thread topbarThread =
       new Thread() {
         @Override
         public void run() {

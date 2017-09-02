@@ -1,10 +1,7 @@
 package codeshooter.model;
 
 import codeshooter.model.Sensor.ReadingType;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.nio.ByteBuffer;
 
 public class ShooterState implements Serializable {
@@ -97,7 +94,10 @@ public class ShooterState implements Serializable {
 
   private void readObject(ObjectInputStream in) throws IOException {
     byte[] byteArray = new byte[BYTE_BUFFER_SIZE];
-    in.read(byteArray);
-    fromByteArray(byteArray);
+    if (in.read(byteArray) != -1) {
+      fromByteArray(byteArray);
+    } else {
+      throw new EOFException();
+    }
   }
 }

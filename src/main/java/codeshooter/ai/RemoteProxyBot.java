@@ -1,5 +1,7 @@
 package codeshooter.ai;
 
+import codeshooter.model.Shooter;
+import codeshooter.model.ShooterState;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -7,67 +9,67 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Logger;
 
-import codeshooter.model.Shooter;
-import codeshooter.model.ShooterState;
-
 public class RemoteProxyBot extends ShooterBot {
-	private int port;
+  private int port;
 
-	private static Logger LOGGER = Logger.getLogger(RemoteProxyBot.class.getName());
+  private static Logger LOGGER = Logger.getLogger(RemoteProxyBot.class.getName());
 
-	public RemoteProxyBot(int port) {
-		LOGGER.info("Creating RemoteProxyBot listening at port " + port);
+  public RemoteProxyBot(int port) {
+    LOGGER.info("Creating RemoteProxyBot listening at port " + port);
 
-		this.port = port;
-	}
+    this.port = port;
+  }
 
-	@Override
-	public void start(Shooter shooter) {
-		runnable = new Runnable() {
-			@Override
-			public void run() {
-				LOGGER.info("Waiting for connection at port " + port);
+  @Override
+  public void start(Shooter shooter) {
+    runnable =
+        new Runnable() {
+          @Override
+          public void run() {
+            LOGGER.info("Waiting for connection at port " + port);
 
-				try ( ServerSocket serverSocket = new ServerSocket(port);
-						Socket clientSocket = serverSocket.accept();
-						ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
-						ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream()); ) {
-					LOGGER.info("Connected at port " + port);
+            try (ServerSocket serverSocket = new ServerSocket(port);
+                Socket clientSocket = serverSocket.accept();
+                ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
+                ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream()); ) {
+              LOGGER.info("Connected at port " + port);
 
-					while ( true ) {
-						ShooterState state = new ShooterState(shooter.getHealth(),
-								shooter.getSensor().getReadings(),
-								shooter.getSensor().getTypes());
+              while (true) {
+                ShooterState state =
+                    new ShooterState(
+                        shooter.getHealth(),
+                        shooter.getSensor().getReadings(),
+                        shooter.getSensor().getTypes());
 
-						out.writeObject(state);
-						out.flush();
+                out.writeObject(state);
+                out.flush();
 
-						int key = in.readInt();
+                int key = in.readInt();
 
-						// TODO: deal with invalid keys
+                // TODO: deal with invalid keys
 
-						shooter.processPressKeyCode(key);
+                shooter.processPressKeyCode(key);
 
-						Thread.sleep(KEY_DURATION_IN_MS);
+                Thread.sleep(KEY_DURATION_IN_MS);
 
-						shooter.processReleaseKeyCode(key);
+                shooter.processReleaseKeyCode(key);
 
-						Thread.sleep(KEY_WAIT_IN_MS);
-					}
-				} catch ( InterruptedException e ) {
-					LOGGER.severe("Thread interrupted");
-				} catch ( IOException e ) {
-					LOGGER.severe("IOException");
-					e.printStackTrace();
-				}
-			}
-		};
+                Thread.sleep(KEY_WAIT_IN_MS);
+              }
+            } catch (InterruptedException e) {
+              LOGGER.severe("Thread interrupted");
+            } catch (IOException e) {
+              LOGGER.severe("IOException");
+              e.printStackTrace();
+            }
+          }
+        };
 
-		new Thread(runnable).start();
-	}
+    new Thread(runnable).start();
+  }
 
-	@Override
-	public int getKey(ShooterState shooterState) {
-		return 0;
-	}
+  @Override
+  public int getKey(ShooterState shooterState) {
+    return 0;
+  }
 }

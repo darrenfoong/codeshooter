@@ -43,7 +43,7 @@ public class Sensor {
   }
 
   public double[] getReadings() {
-    return readings;
+    return readings.clone();
   }
 
   public double getReading(int i) {
@@ -51,7 +51,7 @@ public class Sensor {
   }
 
   public ReadingType[] getTypes() {
-    return types;
+    return types.clone();
   }
 
   public ReadingType getType(int i) {

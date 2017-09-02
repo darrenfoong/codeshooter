@@ -159,7 +159,10 @@ public class Application extends JFrame {
                   break;
                 }
               }
-            } catch (Exception e) {
+            } catch (ClassNotFoundException
+                | InstantiationException
+                | IllegalAccessException
+                | UnsupportedLookAndFeelException e) {
               LOGGER.warning("Nimbus look and feel not available");
             }
 

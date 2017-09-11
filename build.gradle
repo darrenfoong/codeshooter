@@ -32,6 +32,10 @@ spotless {
     }
 }
 
+findbugs {
+    showProgress = false
+}
+
 jar {
     manifest {
         attributes 'Main-Class': 'codeshooter.ui.Application'

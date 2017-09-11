@@ -12,6 +12,7 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'com.diffplug.gradle.spotless'
 apply plugin: 'findbugs'
+apply plugin: 'jacoco'
 
 group = 'codeshooter'
 version = '0.0.1-SNAPSHOT'
